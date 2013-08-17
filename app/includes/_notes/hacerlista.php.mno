@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_RS" value="name:id;datatype:int,name:AL_Codigo;datatype:string,name:AF_Descripcion;datatype:blob,name:parent_id;datatype:string" />
+</info>
