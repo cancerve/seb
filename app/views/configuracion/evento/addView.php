@@ -11,7 +11,7 @@ $objPais = new Pais();
 <link rel="stylesheet" type="text/css" href="../../../css/seb.css">
 <link rel="stylesheet" href="../../../css/jquery-ui.css" />
 <link rel="stylesheet" href="../../../css/jquery.treeview.css" />
-
+<link rel="stylesheet" media="all" type="text/css" href="../../../css/jquery-ui-timepicker-addon.css" />
 
 <script type="text/javascript" src="../../../js/jquery.js"></script>
 <script type="text/javascript" src="../../../js/jquery-ui.js"></script>
@@ -21,7 +21,8 @@ $objPais = new Pais();
 <script type="text/javascript" src="../../../js/jquery.treeview.js"></script>
 <script type="text/javascript" src="../../../js/demo.js"></script>
 <script type="text/javascript" src="../../../js/validar.js"></script>
-
+<script type="text/javascript" src="../../../js/jquery-ui-timepicker-addon.js"></script>
+        
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
@@ -51,13 +52,13 @@ $objPais = new Pais();
               <td colspan="2" class="BlancoGrisClaro">&nbsp;Todos los campos con asteriscos (<span class="Rojita">&nbsp;*&nbsp;</span>) son de car&aacute;cter obligatorio.</td>
             </tr>
             <tr>
-              <td width="27%" class="Textonegro">&nbsp;</td>
-              <td width="73%">&nbsp;</td>
+              <td width="118" class="Textonegro">&nbsp;</td>
+              <td width="598">&nbsp;</td>
             </tr>
             <tr valign="baseline">
-              <td>pais_AL_CodPais:</td>
+              <td>Pais:</td>
               <td>
-              <select name="pais_AL_CodPais" id="pais_AL_CodPais" onChange="cargaContenido(this.id)">
+              <select name="pais_AL_CodPais" id="pais_AL_CodPais" onChange="cargaContenido(this.id)" style="width:350px">
                 <option selected="selected">[ Seleccione ]</option>
 				<?php 
 					$rsPais=$objPais->listar($objConexion);
@@ -73,23 +74,23 @@ $objPais = new Pais();
                </td>
             </tr>
             <tr valign="baseline">
-              <td>ciudad_AF_CodCiudad:</td>
+              <td>Ciudad:</td>
               <td>
-              <select id="ciudad_AF_CodCiudad" name="ciudad_AF_CodCiudad" disabled="disabled">
+              <select id="ciudad_AF_CodCiudad" name="ciudad_AF_CodCiudad" disabled="disabled" style="width:350px">
                 	<option value="0" >[ Seleccione ]</option>
               </select></td>
             </tr>
             <tr valign="baseline">
-              <td>AF_Nombre_Evento:</td>
-              <td><input type="text" name="AF_Nombre_Evento" id="AF_Nombre_Evento" value="" size="32" required></td>
+              <td>Nombre Evento:</td>
+              <td><input type="text" name="AF_Nombre_Evento" id="AF_Nombre_Evento" value="" size="32" required style="width:350px"></td>
             </tr>
             <tr valign="baseline">
-              <td valign="top">AF_Lugar:</td>
-              <td ><textarea name="AF_Lugar" id="AF_Lugar" cols="50" rows="5"></textarea></td>
+              <td valign="top">Lugar:</td>
+              <td ><textarea name="AF_Lugar" id="AF_Lugar" cols="50" rows="5" style="width:350px"></textarea></td>
             </tr>
             <tr valign="baseline">
-              <td>NU_Cantidad_Mesa:</td>
-              <td><input type="number" name="NU_Cantidad_Mesa" id="NU_Cantidad_Mesa" value="" size="32" style="width:212px">
+              <td>Cantidad Mesa:</td>
+              <td><input type="number" name="NU_Cantidad_Mesa" id="NU_Cantidad_Mesa" value="" size="32" style="width:350px">
                 <input name="BI_Activo" type="hidden" id="BI_Activo" value="1"></td>
             </tr>
           </table>
@@ -112,49 +113,90 @@ $objPais = new Pais();
       <td class="Textonegro">
       <table width="100%" class="TablaRojaGrid">
         <tr class="TablaRojaGridTRTitulo">
+          <td colspan="2">Descripción de la Fase</td>
           <td>Fecha Desde: </td>
           <td>Fecha Hasta: </td>
-          <td>Descripción de la Fase</td>
         </tr>
         <tr class="Textonegro">
-          <td align="center">&nbsp;</td>
-          <td align="center">&nbsp;</td>
-          <td>&nbsp;</td>
+          <td width="18%" align="center">&nbsp;</td>
+          <td width="39%" align="center">&nbsp;</td>
+          <td colspan="2">&nbsp;</td>
         </tr>
         <tr class="Textonegro">
+          <td colspan="2" align="left">&nbsp;&nbsp;&nbsp;Contactar Oficinas Comerciales y Registrar Empresas:</td>
           <td align="center"><input type="text" name="F1_FechaDesde" value="" size="32" id="F1_FechaDesde" style="width:100px" ></td>
           <td align="center"><input type="text" name="F1_FechaHasta" value="" size="32" id="F1_FechaHasta" style="width:100px" ></td>
-          <td>Contactar Oficinas Comerciales y Registrar Empresas</td>
         </tr>
         <tr  class="Textonegro">
+          <td colspan="2" align="left">&nbsp;&nbsp;&nbsp;Contactar Empresas:</td>
           <td align="center"><input type="text" name="F2_FechaDesde" value="" size="32" id="F2_FechaDesde" style="width:100px" ></td>
           <td align="center"><input type="text" name="F2_FechaHasta" value="" size="32" id="F2_FechaHasta" style="width:100px" ></td>
-          <td>Contactar Empresas</td>
         </tr>
         <tr  class="Textonegro">
+          <td colspan="2" align="left">&nbsp;&nbsp;&nbsp;Postular Empresas:</td>
           <td align="center"><input type="text" name="F3_FechaDesde" value="" size="32" id="F3_FechaDesde" style="width:100px" ></td>
           <td align="center"><input type="text" name="F3_FechaHasta" value="" size="32" id="F3_FechaHasta" style="width:100px" ></td>
-          <td>Postular Empresas</td>
         </tr>
         <tr  class="Textonegro">
+          <td colspan="2" align="left">&nbsp;&nbsp;&nbsp;Seleccionar Empresas (Comite de Seleccion):</td>
           <td align="center"><input type="text" name="F4_FechaDesde" value="" size="32" id="F4_FechaDesde" style="width:100px" ></td>
           <td align="center"><input type="text" name="F4_FechaHasta" value="" size="32" id="F4_FechaHasta" style="width:100px" ></td>
-          <td>Seleccionar Empresas (Comite de Seleccion)</td>
         </tr>
         <tr  class="Textonegro">
+          <td colspan="2" align="left">&nbsp;&nbsp;&nbsp;Confirmar Participación, Pago y Agendación de Citas de Negocio:</td>
           <td align="center"><input type="text" name="F5_FechaDesde" value="" size="32" id="F5_FechaDesde" style="width:100px" ></td>
           <td align="center"><input type="text" name="F5_FechaHasta" value="" size="32" id="F5_FechaHasta" style="width:100px" ></td>
-          <td>Confirmar Participación, Pago y Agendación de Citas de Negocio</td>
         </tr>
         <tr  class="Textonegro">
+          <td colspan="2" align="left">&nbsp;&nbsp;&nbsp;Realización del Evento:</td>
           <td align="center"><input type="text" name="FE_Fecha_Desde" value="" size="32" id="FE_Fecha_Desde" style="width:100px"></td>
           <td align="center"><input type="text" name="FE_Fecha_Hasta" value="" size="32" id="FE_Fecha_Hasta"style="width:100px" ></td>
-          <td>Realización del Evento</td>
+        </tr>
+        <tr  class="Textonegro">
+          <td colspan="2" align="left">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr class="TablaRojaGridTRTitulo">
+          <td align="center">Descripción:</td>
+          <td align="center">Horas:</td>
+          <td>Descripción:</td>
+          <td align="center">Minutos:</td>
+        </tr>
+        <tr  class="Textonegro">
+          <td align="left">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr  class="Textonegro">
+          <td align="left">&nbsp;&nbsp;&nbsp;Hora Inicial AM:</td>
+          <td align="center"><input name="TI_Hora_Inicio_Am" type="text" id="TI_Hora_Inicio_Am" style="width:100px" value="08:00"></td>
+          <td width="21%">&nbsp;&nbsp;&nbsp;Minutos por Citas:</td>
+          <td width="22%" align="center"><input type="number" name="NU_Minutos_x_Cita" id="NU_Minutos_x_Cita" style="width:100px"></td>
+        </tr>
+        <tr  class="Textonegro">
+          <td align="left">&nbsp;&nbsp;&nbsp;Hora Final AM:</td>
+          <td align="center"><input name="TI_Hora_Final_Am" type="text" id="TI_Hora_Final_Am" style="width:100px" max="12:00:00" min="08:00:00" value="11:00"></td>
+          <td>&nbsp;&nbsp;&nbsp;Minutos entre Citas:</td>
+          <td align="center"><input type="number" name="NU_Minutos_Entre_Cita" id="NU_Minutos_Entre_Cita" style="width:100px"></td>
+        </tr>
+        <tr  class="Textonegro">
+          <td align="left">&nbsp;&nbsp;&nbsp;Hora Inicial PM:</td>
+          <td align="center"><input name="TI_Hora_Inicio_Pm" type="text" id="TI_Hora_Inicio_Pm" style="width:100px" max="07:00:00" min="02:00:00" autocomplete="off" value="14:00"></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr  class="Textonegro">
+          <td align="left">&nbsp;&nbsp;&nbsp;Hora Final PM:</td>
+          <td align="center"><input name="TI_Hora_Final_Pm" type="text" id="TI_Hora_Final_Pm" style="width:100px" value="17:00"></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
         </tr>
         <tr  class="Textonegro">
           <td align="center">&nbsp;</td>
           <td align="center">&nbsp;</td>
-          <td>&nbsp;</td>
+          <td colspan="2">&nbsp;</td>
         </tr>
         </table></td>
     </tr>
@@ -163,7 +205,7 @@ $objPais = new Pais();
 <div id="tabs-3">
 <table width="100%" border="0" cellpadding="2" cellspacing="2" class="Textonegro">
             <tr>
-              <td colspan="2" class="BlancoGris">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Llene el formulario para Agregar un nuevo Evento</td>
+              <td colspan="2" class="BlancoGris">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Llene el formulario para Agregar los paises vinculados al Evento</td>
             </tr>
             <tr>
               <td colspan="2" class="BlancoGrisClaro">&nbsp;Todos los campos con asteriscos (<span class="Rojita">&nbsp;*&nbsp;</span>) son de car&aacute;cter obligatorio.</td>
@@ -186,7 +228,7 @@ $objPais = new Pais();
 <div id="tabs-4">
 <table width="100%" border="0" cellpadding="2" cellspacing="2" class="Textonegro">
             <tr>
-              <td colspan="2" class="BlancoGris">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Llene el formulario para Agregar un nuevo Evento</td>
+              <td colspan="2" class="BlancoGris">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Llene el formulario para Agregar los codigos arancelarios relacionados al Evento</td>
             </tr>
         <tr>
               <td colspan="2" class="BlancoGrisClaro">&nbsp;Todos los campos con asteriscos (<span class="Rojita">&nbsp;*&nbsp;</span>) son de car&aacute;cter obligatorio.</td>

@@ -8,16 +8,24 @@
     <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="app/js/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript">
-    $(function() {
-		$( "#basic_example_2" ).timepicker({
-			showAnim: 'slide',
-		});
-	});
-	
-
+    $(function(){
+        $('.example-container > pre').each(function(i){
+            eval($(this).text());
+        });
+    });
     </script>
 	</head> 
 	<body> 
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Add only a timepicker:</p>
+		<div>
 	 		<input type="text" name="basic_example_2" id="basic_example_2" value="" />
+		</div>					
+<pre>
+$('#basic_example_2').timepicker();
+</pre>
+	</div>
+	<!-- ============= example -->
 	</body> 
 </html>

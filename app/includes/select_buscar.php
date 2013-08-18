@@ -117,7 +117,7 @@ if (isset($_POST['AF_CodEvento2'])){
 			  $AL_Web=$objConexion->obtenerElemento($RS,$i,"AL_Web");	
 			  $pais_AL_CodPais = $objConexion->obtenerElemento($RS,$i,"pais_AL_CodPais");
 
-			  $tabla .= '<tr><td class="TablaRojaGridTD">'.$k.'</td><td class="TablaRojaGridTD">'.$pais_AL_CodPais.'</td><td class="TablaRojaGridTD">'.$AF_Razon_Social.'</td><td class="TablaRojaGridTD">'.$AF_Clasificacion_Empresa.'</td><td class="TablaRojaGridTD">'.$AL_Web.'</td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_ver.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="#" onclick="abrir_dialog();"><img src="http://localhost/seb/app/images/bton_cita.gif" width="31" height="31"></a></td></tr>';
+			  $tabla .= '<tr><td class="TablaRojaGridTD">'.$k.'</td><td class="TablaRojaGridTD">'.$pais_AL_CodPais.'</td><td class="TablaRojaGridTD">'.$AF_Razon_Social.'</td><td class="TablaRojaGridTD">'.$AF_Clasificacion_Empresa.'</td><td class="TablaRojaGridTD">'.$AL_Web.'</td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_ver.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/agendacion/cita/citar.php?AF_RIF='.$AF_RIF.'&AF_CodEvento='.$AF_CodEvento.'"><img src="http://localhost/seb/app/images/bton_cita.gif" width="31" height="31"></a></td></tr>';
 
 			}
 			$tabla .= '</table><input type="hidden" value="'.$k.'" name="cantidad" id="cantidad">';			

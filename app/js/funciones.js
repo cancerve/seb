@@ -5,7 +5,7 @@
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
 		changeMonth: false,
-		numberOfMonths: 2,
+		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F1_FechaHasta" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -15,7 +15,7 @@
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
 		changeMonth: false,
-		numberOfMonths: 2,
+		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F2_FechaDesde" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -25,7 +25,7 @@
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
 		changeMonth: false,
-		numberOfMonths: 2,
+		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F2_FechaHasta" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -34,8 +34,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F3_FechaDesde" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -44,8 +43,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F3_FechaHasta" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -54,8 +52,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F4_FechaDesde" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -64,8 +61,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F4_FechaHasta" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -74,8 +70,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F5_FechaDesde" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -84,8 +79,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#F5_FechaHasta" ).datepicker( "option", "minDate", selectedDate );
       	}		
@@ -94,8 +88,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#FE_Fecha_Desde" ).datepicker( "option", "minDate", selectedDate );
       	}
@@ -105,8 +98,7 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
 			$( "#FE_Fecha_Hasta" ).datepicker( "option", "minDate", selectedDate );
       	}
@@ -115,11 +107,36 @@
 		showAnim: 'slide',
 		dateformat: 'dd-mm-yy',
 		defaultDate: "+1w",
-		changeMonth: false,
-		numberOfMonths: 2,
+		changeMonth: false,		numberOfMonths: 1,
     });
-	
 });
+//////////////////////////// CAMPOS HORA //////////////////////////////
+    $(function() {
+		$( "#TI_Hora_Inicio_Am" ).timepicker({
+			showAnim: 'slide',
+			stepMinute: 15,
+			hourMin: 8,
+			hourMax: 17
+		});
+		$( "#TI_Hora_Final_Am" ).timepicker({
+			showAnim: 'slide',
+			stepMinute: 15,
+			hourMin: 8,
+			hourMax: 17
+		});
+		$( "#TI_Hora_Inicio_Pm" ).timepicker({
+			showAnim: 'slide',
+			stepMinute: 15,
+			hourMin: 8,
+			hourMax: 17
+		});
+		$( "#TI_Hora_Final_Pm" ).timepicker({
+			showAnim: 'slide',
+			stepMinute: 15,
+			hourMin: 8,
+			hourMax: 17
+		});
+	});
 /////////////////////////PESTANAS //////////////////////////		
 	$(function() {
 		$( "#tabs" ).tabs();

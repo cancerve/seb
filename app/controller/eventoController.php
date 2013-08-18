@@ -33,11 +33,17 @@
 			$F4_FechaHasta 			= cambiarFormatoE($_POST['F4_FechaHasta']);
 			$F5_FechaDesde 			= cambiarFormatoE($_POST['F5_FechaDesde']);
 			$F5_FechaHasta 			= cambiarFormatoE($_POST['F5_FechaHasta']);
+			$TI_Hora_Inicio_Am		= $_POST["TI_Hora_Inicio_Am"];
+			$TI_Hora_Final_Am		= $_POST["TI_Hora_Final_Am"];
+			$TI_Hora_Inicio_Pm		= $_POST["TI_Hora_Inicio_Pm"];
+			$TI_Hora_Final_Pm		= $_POST["TI_Hora_Final_Pm"];
+			$NU_Minutos_x_Cita		= $_POST["NU_Minutos_x_Cita"];
+			$NU_Minutos_Entre_Cita	= $_POST["NU_Minutos_Entre_Cita"];
 			$NU_Cantidad_Mesa 		= $_POST["NU_Cantidad_Mesa"];
 			$BI_Activo 				= $_POST["BI_Activo"];
 
 			///////////////INSERT EVENTO //////////////////////////////
-			$objEvento->insertar($objConexion,$ciudad_AF_CodCiudad,$pais_AL_CodPais,$AF_Nombre_Evento,$AF_Lugar,$FE_Fecha_Desde,$FE_Fecha_Hasta,$F1_FechaDesde,$F1_FechaHasta,$F2_FechaDesde,$F2_FechaHasta,$F3_FechaDesde,$F3_FechaHasta,$F4_FechaDesde,$F4_FechaHasta,$F5_FechaDesde,$F5_FechaHasta,$NU_Cantidad_Mesa,$BI_Activo);
+			$objEvento->insertar($objConexion,$ciudad_AF_CodCiudad,$pais_AL_CodPais,$AF_Nombre_Evento,$AF_Lugar,$FE_Fecha_Desde,$FE_Fecha_Hasta,$F1_FechaDesde,$F1_FechaHasta,$F2_FechaDesde,$F2_FechaHasta,$F3_FechaDesde,$F3_FechaHasta,$F4_FechaDesde,$F4_FechaHasta,$F5_FechaDesde,$F5_FechaHasta,$TI_Hora_Inicio_Am,$TI_Hora_Final_Am,$TI_Hora_Inicio_Pm,$TI_Hora_Final_Pm,$NU_Minutos_x_Cita,$NU_Minutos_Entre_Cita,$NU_Cantidad_Mesa,$BI_Activo);
 			$AF_CodEvento = $objEvento->obtenerUltimoId($objConexion);
 
 			///////////////INSERT PAISES PARTICIPANTES //////////////////////////////
@@ -74,6 +80,8 @@
 			echo 'ACTUALIZAR';
 		}
 
-		echo "<META HTTP-EQUIV=\"REFRESH\" CONTENT=\"0; URL=../views/configuracion/eventohorario/addView.php?AF_CodEvento=$AF_CodEvento\">";
+		$mensaje="Registro de Evento Exitoso.";
+		echo "<META HTTP-EQUIV=\"REFRESH\" CONTENT=\"0; URL=../views/configuracion/evento/index.php?mensaje=$mensaje\">";
+
 	}
 ?>

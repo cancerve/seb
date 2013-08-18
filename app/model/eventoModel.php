@@ -17,10 +17,16 @@ class Evento{
 	private $F4_FechaHasta;
 	private $F5_FechaDesde;
 	private $F5_FechaHasta;
+	private $TI_Hora_Inicio_Am;
+	private $TI_Hora_Final_Am;
+	private $TI_Hora_Inicio_Pm;
+	private $TI_Hora_Final_Pm;
+	private $NU_Minutos_x_Cita;
+	private $NU_Minutos_Entre_Cita;
 	private $NU_Cantidad_Mesa;
 	private $BI_Activo;			
 
-	function insertar($objConexion,$ciudad_AF_CodCiudad,$pais_AL_CodPais,$AF_Nombre_Evento,$AF_Lugar,$FE_Fecha_Desde,$FE_Fecha_Hasta,$F1_FechaDesde,$F1_FechaHasta,$F2_FechaDesde,$F2_FechaHasta,$F3_FechaDesde,$F3_FechaHasta,$F4_FechaDesde,$F4_FechaHasta,$F5_FechaDesde,$F5_FechaHasta,$NU_Cantidad_Mesa,$BI_Activo){
+	function insertar($objConexion,$ciudad_AF_CodCiudad,$pais_AL_CodPais,$AF_Nombre_Evento,$AF_Lugar,$FE_Fecha_Desde,$FE_Fecha_Hasta,$F1_FechaDesde,$F1_FechaHasta,$F2_FechaDesde,$F2_FechaHasta,$F3_FechaDesde,$F3_FechaHasta,$F4_FechaDesde,$F4_FechaHasta,$F5_FechaDesde,$F5_FechaHasta,$TI_Hora_Inicio_Am,$TI_Hora_Final_Am,$TI_Hora_Inicio_Pm,$TI_Hora_Final_Pm,$NU_Minutos_x_Cita,$NU_Minutos_Entre_Cita,$NU_Cantidad_Mesa,$BI_Activo){
 		
 		$this->generarNuevo($objConexion);
 		$this->ciudad_AF_CodCiudad	= $ciudad_AF_CodCiudad;
@@ -39,12 +45,18 @@ class Evento{
 		$this->F4_FechaHasta		= $F4_FechaHasta;
 		$this->F5_FechaDesde		= $F5_FechaDesde;
 		$this->F5_FechaHasta		= $F5_FechaHasta;
+		$this->TI_Hora_Inicio_Am	= $TI_Hora_Inicio_Am;
+		$this->TI_Hora_Final_Am		= $TI_Hora_Final_Am;
+		$this->TI_Hora_Inicio_Pm	= $TI_Hora_Inicio_Pm;
+		$this->TI_Hora_Final_Pm		= $TI_Hora_Final_Pm;
+		$this->NU_Minutos_x_Cita	= $NU_Minutos_x_Cita;
+		$this->NU_Minutos_Entre_Cita= $NU_Minutos_Entre_Cita;
 		$this->NU_Cantidad_Mesa		= $NU_Cantidad_Mesa;
 		$this->BI_Activo			= $BI_Activo;
 
-		$query="INSERT INTO evento (AF_CodEvento,ciudad_AF_CodCiudad,pais_AL_CodPais,AF_Nombre_Evento,AF_Lugar,FE_Fecha_Desde,FE_Fecha_Hasta,F1_FechaDesde,F1_FechaHasta,F2_FechaDesde,F2_FechaHasta,F3_FechaDesde,F3_FechaHasta,F4_FechaDesde,F4_FechaHasta,F5_FechaDesde,F5_FechaHasta,NU_Cantidad_Mesa,BI_Activo)
+		$query="INSERT INTO evento (AF_CodEvento,ciudad_AF_CodCiudad,pais_AL_CodPais,AF_Nombre_Evento,AF_Lugar,FE_Fecha_Desde,FE_Fecha_Hasta,F1_FechaDesde,F1_FechaHasta,F2_FechaDesde,F2_FechaHasta,F3_FechaDesde,F3_FechaHasta,F4_FechaDesde,F4_FechaHasta,F5_FechaDesde,F5_FechaHasta,TI_Hora_Inicio_Am,TI_Hora_Final_Am,TI_Hora_Inicio_Pm,TI_Hora_Final_Pm,NU_Minutos_x_Cita,NU_Minutos_Entre_Cita,NU_Cantidad_Mesa,BI_Activo)
 				VALUES
-				('".$this->AF_CodEvento."','".$this->ciudad_AF_CodCiudad."','".$this->pais_AL_CodPais."','".$this->AF_Nombre_Evento."','".$this->AF_Lugar."','".$this->FE_Fecha_Desde."','".$this->FE_Fecha_Hasta."','".$this->F1_FechaDesde."','".$this->F1_FechaHasta."','".$this->F2_FechaDesde."','".$this->F2_FechaHasta."','".$this->F3_FechaDesde."','".$this->F3_FechaHasta."','".$this->F4_FechaDesde."','".$this->F4_FechaHasta."','".$this->F5_FechaDesde."','".$this->F5_FechaHasta."',".$this->NU_Cantidad_Mesa.",".$this->BI_Activo.")";
+				('".$this->AF_CodEvento."','".$this->ciudad_AF_CodCiudad."','".$this->pais_AL_CodPais."','".$this->AF_Nombre_Evento."','".$this->AF_Lugar."','".$this->FE_Fecha_Desde."','".$this->FE_Fecha_Hasta."','".$this->F1_FechaDesde."','".$this->F1_FechaHasta."','".$this->F2_FechaDesde."','".$this->F2_FechaHasta."','".$this->F3_FechaDesde."','".$this->F3_FechaHasta."','".$this->F4_FechaDesde."','".$this->F4_FechaHasta."','".$this->F5_FechaDesde."','".$this->F5_FechaHasta."','".$this->TI_Hora_Inicio_Am."','".$this->TI_Hora_Final_Am."','".$this->TI_Hora_Inicio_Pm."','".$this->TI_Hora_Final_Pm."','".$this->NU_Minutos_x_Cita."','".$this->NU_Minutos_Entre_Cita."',".$this->NU_Cantidad_Mesa.",".$this->BI_Activo.")";
 		$resultado=$objConexion->ejecutar($query);
 		return true;
 	}
@@ -66,7 +78,7 @@ class Evento{
 	}
 	
 	function buscar($objConexion,$AF_CodEvento){
-		$this->AF_CodEvento=$AF_CodEvento;
+		$this->AF_CodEvento = $AF_CodEvento;
 		$query="SELECT E.*, P.AL_Pais, C.AL_Ciudad
 				FROM evento AS E
 				LEFT JOIN pais AS P ON (P.AL_CodPais=E.pais_AL_CodPais)
