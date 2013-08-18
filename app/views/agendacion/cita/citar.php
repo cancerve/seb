@@ -1,10 +1,8 @@
 <?php 
 require_once('../../../controller/sessionController.php'); 
 require_once('../../../model/eventoModel.php'); 
-require_once('../../../model/eventoHorarioModel.php'); 
 
 $objEvento 			= new Evento();
-$objEventoHorario 	= new EventoHorario();
 ?>
 <html>
 <head>
@@ -64,23 +62,19 @@ $objEventoHorario 	= new EventoHorario();
 	$rsEvento 		= $objEvento->buscar($objConexion,$AF_CodEvento);
 	$cantEvento 	= $objConexion->cantidadRegistros($rsEvento);
 	
-	$FE_Fecha_Desde	= $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Desde");
-	$FE_Fecha_Hasta	= $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Hasta");
+	$FE_Fecha_Desde			= $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Desde");
+	$FE_Fecha_Hasta			= $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Hasta");
+	$TI_Hora_Inicio_Am		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Inicio_Am");
+	$TI_Hora_Final_Am		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Final_Am");
+	$TI_Hora_Inicio_Pm		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Inicio_Pm");
+	$TI_Hora_Final_Pm		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Final_Pm");
+	$NU_Minutos_x_Cita		= $objConexion->obtenerElemento($rsEvento,0,"NU_Minutos_x_Cita");		
+	$NU_Minutos_Entre_Cita	= $objConexion->obtenerElemento($rsEvento,0,"NU_Minutos_Entre_Cita");
+
+	$segundos		= strtotime($FE_Fecha_Hasta) - strtotime($FE_Fecha_Desde);
+	$dias_evento	= (intval($segundos/60/60/24))+1;	
 	
-	$rsHorario = $objEventoHorario->listarXevento($objConexion,$AF_CodEvento);
-	$cantHorario = $objConexion->cantidadRegistros($rsHorario);
-
-	$columnas = 1;
-
-	for($i=0;$i<$cantHorario;$i++){
-	  $TI_Hora_Inicio_Am	= $objConexion->obtenerElemento($rsHorario,$i,"TI_Hora_Inicio_Am");
-	  $TI_Hora_Final_Am		= $objConexion->obtenerElemento($rsHorario,$i,"TI_Hora_Final_Am");
-	  $TI_Hora_Inicio_Pm	= $objConexion->obtenerElemento($rsHorario,$i,"TI_Hora_Inicio_Pm");
-	  $TI_Hora_Final_Pm		= $objConexion->obtenerElemento($rsHorario,$i,"TI_Hora_Final_Pm");
-	  $NU_Minutos_x_Cita	= $objConexion->obtenerElemento($rsHorario,$i,"NU_Minutos_x_Cita");		
-	  $NU_Minutos_Entre_Cita= $objConexion->obtenerElemento($rsHorario,$i,"NU_Minutos_Entre_Cita");
-	} 
-
+	$columnas 		= $dias_evento;
 	$filas = 5;
 
 	$texto = 0;

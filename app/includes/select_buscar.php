@@ -96,12 +96,12 @@ if (isset($_POST['AF_CodEvento2'])){
 
 		for($x=0; $x<$cantRS1; $x++){
 		    $AL_CodArancel  = $objConexion->obtenerElemento($RS1,$x,"AL_CodArancel");
-			$codigos .= "cod_arancel_AL_CodArancel='".$AL_CodArancel."' or ";
+			$codigos .= "EMCA.cod_arancel_AL_CodArancel='".$AL_CodArancel."' or ";
 		}
 
 		$codigos = substr($codigos, 0, -4);
 	
-		$RS 	= $objEmpresa->buscarXEventXempXcod($objConexion,$AF_CodEvento,$codigos);
+		$RS 	= $objEmpresa->buscarXEventXempXcod($objConexion,$AF_CodEvento,$AF_RIF,$codigos);
 		$cantRS = $objConexion->cantidadRegistros($RS);
 
 		if ($cantRS>0){
