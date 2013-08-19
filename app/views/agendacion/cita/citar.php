@@ -71,136 +71,82 @@ $objEvento 			= new Evento();
 	$NU_Minutos_x_Cita		= $objConexion->obtenerElemento($rsEvento,0,"NU_Minutos_x_Cita");		
 	$NU_Minutos_Entre_Cita	= $objConexion->obtenerElemento($rsEvento,0,"NU_Minutos_Entre_Cita");
 
-	$segundos		= strtotime($FE_Fecha_Hasta) - strtotime($FE_Fecha_Desde);
-	$dias_evento	= (intval($segundos/60/60/24))+1;	
-	
-	$columnas 		= $dias_evento;
-	$filas = 5;
+	$segundos	= strtotime($FE_Fecha_Hasta) - strtotime($FE_Fecha_Desde);
+	$dias_evento= (intval($segundos/60/60/24))+1;	
+	$minutos 	= $NU_Minutos_x_Cita + $NU_Minutos_Entre_Cita;
 
-	$texto = 0;
-	$grey = true;	
+////////////////////////////////////HORARIO EN LA MANANA /////////////////////	
+	$actual		= $TI_Hora_Inicio_Am; 
+	$i = 0;
+	while($actual < $TI_Hora_Final_Am){ 
+		$actual = strtotime('+'.$minutos.' minute', strtotime($actual));
+		$actual= date('H:i:s',$actual);	
+		$i++;
+	}
+	
+	$columnas 	= $dias_evento;
+	$filas 		= $i;
 ?> 
 <!-- //////////////////// HORARIO DINAMICO PHP //////////////////////////////////////// -->
-<table border="1">
- <?php
- //Iniciamos el bucle de las filas
- for($t=0;$t<$filas;$t++){
-  echo "<tr>";
-  //Iniciamos el bucle de las columnas
-  for($y=0;$y<$columnas;$y++){
-   if($grey){
-    //Pintamos el cuadro
-    echo "<td style=padding:3px;
-        background-color:#F5D0A9;>".$texto."</td>";
-    //El próximo no será pintado
-    $grey=false;
-    $texto++;
-   }else{
-    //Dejamos cuadro en blanco
-    echo "<td style=padding:3px;>".$texto."</td>";
-    //El próximo será pintado
-    $grey=true;
-    $texto++;
-    }
-   }
-   //Cerramos columna
-   echo "</tr>";
-  }
- ?>
- <!-- Cerramos tabla -->
- </table>
-<!-- /////////////////////////////////// HORARIO HTML /////////////////////////////////////////// -->                
 <table width="534" align="center" class="TablaRojaGrid">
-<tr class="TablaRojaGridTRTitulo">
-  <th width="100" scope="col" align="center">Horario</th>
-  <th width="100" scope="col">17/07/2013</th>
-  <th width="100" scope="col">18/07/2013</th>
-  <th width="100" scope="col">19/07/2013</th>
-  <th width="100" scope="col">20/07/2013</th>
-</tr>
-<tr>
-  <td colspan="5">-------- MAÑANA --------</td>
-</tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">&nbsp;09:00 a 09:30</td>
-  <td align="center" bgcolor="#0099FF" class="TablaRojaGridTDHorario">&nbsp;</td>
-  <td class="TablaRojaGridTDHorario" align="center"><input type="button" name="button" id="button" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario" align="center"><input type="button" name="button" id="button" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario" align="center"><input type="button" name="button" id="button" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-</tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">&nbsp;09:40 a 10:10</td>
-  <td bgcolor="#0099FF" class="TablaRojaGridTDHorario">&nbsp;</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button6" id="button6" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-</tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">10:20 a 10:50</td>
-  <td bgcolor="#0099FF" class="TablaRojaGridTDHorario">&nbsp;</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button7" id="button7" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
+ <tr class="TablaRojaGridTRTitulo">
+ 	<td width="100" scope="col" align="center">&nbsp;Horario</td>
+	<?php 
+	$dia = $FE_Fecha_Desde;
+	for ($k=0; $k<$columnas;$k++){ 
+		echo '<td width="100" scope="col">'.date("d-m-Y", strtotime($dia)).'</td>';
+		$dia = date("d-m-Y", strtotime($dia)+(60*60*24));
+	}
+	?>    
  </tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">11:00 a 11:30</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button3" id="button3" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td bgcolor="#FFCC00" class="TablaRojaGridTDHorario">&nbsp;</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button8" id="button8" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
- </tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">11:40 a 12:10</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button3" id="button3" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button9" id="button9" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
- </tr>
-<tr>
-  <td colspan="5">-------- TARDE -------- </td>
-</tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">02:00 a 02:30</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button3" id="button3" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario" align="center"><input type="button" name="button" id="button" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
- </tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">02:40 a 03:10</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button3" id="button3" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button6" id="button6" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
- </tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">03:20 a 03:50</td>
-  <td bgcolor="#FF0000" class="TablaRojaGridTDHorario">&nbsp;</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td bgcolor="#0099FF" class="TablaRojaGridTDHorario">&nbsp;</td>
- </tr>
-<tr>
-  <td height="22" class="TablaRojaGridTDHorario">04:00 a 04:30</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button3" id="button3" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button8" id="button8" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
- </tr>
-<tr>
-  <td class="TablaRojaGridTDHorario">04:40 a 05:10</td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button3" id="button3" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button4" id="button4" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button5" id="button5" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
-  <td class="TablaRojaGridTDHorario"><input type="button" name="button10" id="button10" class="BotonHorarioDisponible" onClick="javascript:alert('En Construccion...')"></td>
- </tr>
-</table>
-<!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+ <?php
+	$actual	= date('H:i',strtotime($TI_Hora_Inicio_Am));
+	for($t=0; $t<$filas; $t++){
+		echo "<tr>";
+		$actual1 = strtotime('+'.$minutos.' minute', strtotime($actual));
+		$actual1 = date('H:i',$actual1);	
+		echo '<td class="TablaRojaGridTDHorario">'.$actual.' a '.$actual1.'</td>';
+		$actual = $actual1;
+		for($y=0;$y<$columnas;$y++){
+			echo '<td class="TablaRojaGridTDHorario"><a href="#"><img src="../../../images/blank.gif" width="1" height="1"  alt="" class="BotonHorarioDisponible"/></a></td>';
+		}
+		echo "</tr>";
+	}
+ ?>
+ <?php 
+ ////////////////////////////// HORARIO EN LA TARDE /////////////////////////
+	$actual	= $TI_Hora_Inicio_Pm; 
+	$i = 0;
+ 
+ 	while($actual < $TI_Hora_Final_Pm){ 
+		$actual = strtotime('+'.$minutos.' minute', strtotime($actual));
+		$actual= date('H:i:s',$actual);	
+		$i++;
+	}
+	
+	$filas 	= $i;
+
+	$actual	= date('H:i',strtotime($TI_Hora_Inicio_Pm));
+	for($t=0; $t<$filas; $t++){
+		echo "<tr>";
+		$actual1 = strtotime('+'.$minutos.' minute', strtotime($actual));
+		$actual1 = date('H:i',$actual1);	
+		echo '<td class="TablaRojaGridTDHorario">'.$actual.' a '.$actual1.'</td>';
+		$actual = $actual1;
+		for($y=0;$y<$columnas;$y++){
+			echo '<td class="TablaRojaGridTDHorario"><a href="#"><img src="../../../images/blank.gif" width="1" height="1"  alt="" class="BotonHorarioDisponible" /></a></td>';
+		}
+		echo "</tr>";
+	}
+ ?>
+ 
+ 
+ 
+ </table>
+<!-- //////////////////////////////////////////////////////////////// -->
               </td>
               </tr>
-            <tr>
-              <td align="center">&nbsp;</td>
-            </tr>
+
             </table>
           </td>
       </tr>
