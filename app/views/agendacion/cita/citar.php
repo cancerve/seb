@@ -1,8 +1,10 @@
 <?php 
 require_once('../../../controller/sessionController.php'); 
 require_once('../../../model/eventoModel.php'); 
+require_once('../../../model/citaModel.php'); 
 
-$objEvento 			= new Evento();
+$objEvento 	= new Evento();
+$objCita 	= new Cita();
 ?>
 <html>
 <head>
@@ -76,11 +78,11 @@ $objEvento 			= new Evento();
 	$minutos 	= $NU_Minutos_x_Cita + $NU_Minutos_Entre_Cita;
 
 ////////////////////////////////////HORARIO EN LA MANANA /////////////////////	
-	$actual		= $TI_Hora_Inicio_Am; 
+	$actual	= $TI_Hora_Inicio_Am; 
 	$i = 0;
 	while($actual < $TI_Hora_Final_Am){ 
 		$actual = strtotime('+'.$minutos.' minute', strtotime($actual));
-		$actual= date('H:i:s',$actual);	
+		$actual = date('H:i:s',$actual);	
 		$i++;
 	}
 	
@@ -92,27 +94,37 @@ $objEvento 			= new Evento();
  <tr class="TablaRojaGridTRTitulo">
  	<td width="100" scope="col" align="center">&nbsp;Horario</td>
 	<?php 
-	$dia = $FE_Fecha_Desde;
+	$dia = date("d-m-Y", strtotime($FE_Fecha_Desde));
 	for ($k=0; $k<$columnas;$k++){ 
-		echo '<td width="100" scope="col">'.date("d-m-Y", strtotime($dia)).'</td>';
+		$Fecha[$k] = $dia;
+		echo '<td width="100" scope="col">'.$dia.'</td>';
 		$dia = date("d-m-Y", strtotime($dia)+(60*60*24));
 	}
 	?>    
  </tr>
  <?php
 	$actual	= date('H:i',strtotime($TI_Hora_Inicio_Am));
+	$AF_CodEvento 	= $_GET['AF_CodEvento'];
+	$NU_Mesa 		= $objCita->generarMesa($objConexion);
+	$AF_RIF_Invita	= $_SESSION['AF_RIF'];
+	$AF_RIF_Invitado= $_GET['AF_RIF'];
+
 	for($t=0; $t<$filas; $t++){
 		echo "<tr>";
 		$actual1 = strtotime('+'.$minutos.' minute', strtotime($actual));
 		$actual1 = date('H:i',$actual1);	
 		echo '<td class="TablaRojaGridTDHorario">'.$actual.' a '.$actual1.'</td>';
+
+		$Hora_Inicio 	= $actual;
+		$Hora_Final 	= $actual1;
+
 		$actual = $actual1;
-		for($y=0;$y<$columnas;$y++){
-			echo '<td class="TablaRojaGridTDHorario"><a href="#"><img src="../../../images/blank.gif" width="1" height="1"  alt="" class="BotonHorarioDisponible"/></a></td>';
-		}
-		echo "</tr>";
-	}
- ?>
+
+		for($y=0;$y<$columnas;$y++){ ?>			
+        
+			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=date("Y-m-d", strtotime($Fecha[$y]))?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&NU_Mesa=<?=$NU_Mesa?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="espacio" src="../../../images/blank.gif" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/blank.gif')" alt="Empresa XXxxx" /></a></td>
+
+<?php	}	echo "</tr>";	} ?>
  <?php 
  ////////////////////////////// HORARIO EN LA TARDE /////////////////////////
 	$actual	= $TI_Hora_Inicio_Pm; 
@@ -120,11 +132,12 @@ $objEvento 			= new Evento();
  
  	while($actual < $TI_Hora_Final_Pm){ 
 		$actual = strtotime('+'.$minutos.' minute', strtotime($actual));
-		$actual= date('H:i:s',$actual);	
+		$actual = date('H:i:s',$actual);	
 		$i++;
 	}
-	
-	$filas 	= $i;
+
+	$columnas 	= $dias_evento;
+	$filas 		= $i;
 
 	$actual	= date('H:i',strtotime($TI_Hora_Inicio_Pm));
 	for($t=0; $t<$filas; $t++){
@@ -132,15 +145,17 @@ $objEvento 			= new Evento();
 		$actual1 = strtotime('+'.$minutos.' minute', strtotime($actual));
 		$actual1 = date('H:i',$actual1);	
 		echo '<td class="TablaRojaGridTDHorario">'.$actual.' a '.$actual1.'</td>';
+		
+		$Hora_Inicio 	= $actual;
+		$Hora_Final 	= $actual1;
+		
 		$actual = $actual1;
-		for($y=0;$y<$columnas;$y++){
-			echo '<td class="TablaRojaGridTDHorario"><a href="#"><img src="../../../images/blank.gif" width="1" height="1"  alt="" class="BotonHorarioDisponible" /></a></td>';
-		}
-		echo "</tr>";
-	}
- ?>
- 
- 
+
+		for($y=0;$y<$columnas;$y++){ ?>
+
+			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=date("Y-m-d", strtotime($Fecha[$y]))?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&NU_Mesa=<?=$NU_Mesa?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="espacio" src="../../../images/blank.gif" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/blank.gif')" alt="Empresa XXxxx" /></a></td>
+
+<?php	}	echo "</tr>";	} ?>
  
  </table>
 <!-- //////////////////////////////////////////////////////////////// -->
@@ -154,7 +169,6 @@ $objEvento 			= new Evento();
     </div>
 
 </div>
-</table>
 </body>
 </html>
 

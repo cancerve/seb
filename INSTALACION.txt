@@ -1,5 +1,16 @@
+REQUERIMIENTOS:
+
+- Php 5.4.7
+- Apache 2.4
+- MySQL 5.0.10
+- Sistema Operativo Linux
+
 INSTALACION:
 
 - Copie la Carpeta Seb al directorio htdocs o www de su servidor web
 - Edite los archivos constantes.php y conexion.php que se encuentran en /seb/app/includes/ con los datos del servidor de mysql
 - Importe el archivo bd_seb.sql en su base de datos mysql
+
+NOTA IMPORTANTE:
+
+- Se recomienda usar este sistema con el navegador Mozilla Firefox

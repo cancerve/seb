@@ -10,10 +10,10 @@
 ////////////////////// CASO DE USO PERFIL EMPRESA ///////
 	if ($_REQUEST['origen']=='editEmp')
 	{
-		$objEmpresa = new Empresa();
-		$objEmpresaCont = new EmpresaCont();
-		$objEmpresaCodArancel = new EmpresaCodArancel();
-		$objCodArancel = new CodArancel();
+		$objEmpresa 			= new Empresa();
+		$objEmpresaCont 		= new EmpresaCont();
+		$objEmpresaCodArancel 	= new EmpresaCodArancel();
+		$objCodArancel 			= new CodArancel();
 
 		$AF_RIF						= $_POST["AF_RIF"];
 		$ciudad_AF_CodCiudad		= $_POST["ciudad_AF_CodCiudad"];
