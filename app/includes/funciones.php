@@ -16,4 +16,23 @@ function cambiarFormatoE2($fecha1){
 	return $fecha2;
 }
 
+function mayuscula($palabra){
+	$palabra = strtoupper($palabra);
+	return $palabra;	
+}
+
+function minuscula($palabra){
+	$palabra = strtolower($palabra);
+	return $palabra;	
+}
+
+function mayusprimera($palabra){
+	$palabra = ucfirst($palabra);
+	return $palabra;	
+}
+
+function mayuscdapalabra($palabra){
+	$palabra = ucwords($palabra);
+	return $palabra;	
+}
 ?>

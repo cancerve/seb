@@ -2,7 +2,7 @@
 require_once('../../../controller/sessionController.php'); 
 require_once('../../../model/eventoPaisParticiModel.php');
 require_once('../../../model/empresaModel.php');
-require_once('../../../includes/fecha.php');
+require_once('../../../includes/funciones.php');
 
 $objEventoPaisPartici 	= new EventoPaisPartici();
 $objEmpresa = new Empresa();

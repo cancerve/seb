@@ -2,6 +2,7 @@
 require_once('../../../controller/sessionController.php'); 
 require_once('../../../model/eventoModel.php'); 
 require_once('../../../model/citaModel.php'); 
+require_once("../../../includes/funciones.php");
 
 $objEvento 	= new Evento();
 $objCita 	= new Cita();
@@ -45,7 +46,7 @@ $objCita 	= new Cita();
                   <td width="5"><input name="button2" type="button" class="BotonRojo" id="button2" value="[ Cancelar ]" onClick="javascript:window.history.back()"></td>
                   <td width="15">&nbsp;</td>
                   <td width="5" bgcolor="#FFCC00" style="border:#000 solid 1px">&nbsp;</td>
-                  <td>Ocupado la Empresa Interesada</td>
+                  <td>Ocupado por la Empresa Interesada</td>
                   <td width="5" bgcolor="#FF0000" style="border:#000 solid 1px">&nbsp;</td>
                   <td>Ocupado por ambas</td>
                   <td width="5" bgcolor="#0099FF" style="border:#000 solid 1px">&nbsp;</td>
@@ -105,7 +106,6 @@ $objCita 	= new Cita();
  <?php
 	$actual	= date('H:i',strtotime($TI_Hora_Inicio_Am));
 	$AF_CodEvento 	= $_GET['AF_CodEvento'];
-	$NU_Mesa 		= $objCita->generarMesa($objConexion);
 	$AF_RIF_Invita	= $_SESSION['AF_RIF'];
 	$AF_RIF_Invitado= $_GET['AF_RIF'];
 
@@ -120,12 +120,48 @@ $objCita 	= new Cita();
 
 		$actual = $actual1;
 
-		for($y=0;$y<$columnas;$y++){ ?>			
-        
-			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=date("Y-m-d", strtotime($Fecha[$y]))?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&NU_Mesa=<?=$NU_Mesa?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="espacio" src="../../../images/blank.gif" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/blank.gif')" alt="Empresa XXxxx" /></a></td>
+		for($y=0;$y<$columnas;$y++){ 
+			$ocupado1 		= 0;
+			$ocupado2 		= 0;		
+			$FE_Fecha = date("Y-m-d", strtotime($Fecha[$y]));
 
-<?php	}	echo "</tr>";	} ?>
- <?php 
+			$cita = $objCita->buscarXhorario($objConexion,$AF_CodEvento,$FE_Fecha,$Hora_Inicio,$Hora_Final,$AF_RIF_Invita);
+			$cantCita  = $objConexion->cantidadRegistros($cita);
+						
+			if ($cantCita>0){
+				$color = 'azul.gif'; 
+				$leyenda = 'Cita con: '.mayuscula($objConexion->obtenerElemento($cita,0,"AF_Razon_Social")); 															
+				$ocupado1 = 1;
+			}
+			
+			$RS1 = $objCita->buscarXhorario($objConexion,$AF_CodEvento,$FE_Fecha,$Hora_Inicio,$Hora_Final,$AF_RIF_Invitado);
+			$cantRS1  = $objConexion->cantidadRegistros($RS1);			
+			
+			if ($cantRS1>0){
+				$color = 'amarillo.gif'; 
+				$leyenda = 'Ocupado por la Empresa Interesada'; 															
+				$ocupado2 = 1;
+			}
+			
+			if (($ocupado1==1) and ($ocupado2==1)){
+				$color = 'rojo.gif'; 
+				$leyenda = 'Ocupado por ambas Empresas'; 															
+			
+			}
+			if ($ocupado1==0 and $ocupado2==0){
+				$color = 'blank.gif';
+				$leyenda = '';
+?>	
+			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=$FE_Fecha?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="espacio" src="../../../images/<?=$color?>" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/<?=$color?>')" alt="Empresa XXxxx" /></a></td>			
+<?php
+			}else{
+?>
+				<td class="TablaRojaGridTDHorario"><img title="<?=$leyenda?>" src="../../../images/<?=$color?>" class="BotonHorarioDisponible" /></td>
+<?php				
+			}
+		}	
+		echo "</tr>";	
+	}  
  ////////////////////////////// HORARIO EN LA TARDE /////////////////////////
 	$actual	= $TI_Hora_Inicio_Pm; 
 	$i = 0;

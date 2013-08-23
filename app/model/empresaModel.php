@@ -119,11 +119,12 @@ class Empresa{
 	}
 
 
-	function buscarXEventXempXcod($objConexion,$AF_CodEvento,$AF_RIF,$codigos){
+	function buscarXEventXempXcod($objConexion,$AF_CodEvento,$AF_RIF,$codigos, $rifs){
 		
 		$this->AF_CodEvento	= $AF_CodEvento;
 		$this->AF_RIF		= $AF_RIF;
 		$this->codigos		= $codigos;
+		$this->rifs			= $rifs;
 		
 		$query="SELECT EP.BI_Status, E.AF_RIF, E.pais_AL_CodPais, E.AF_Razon_Social, E.AF_Clasificacion_Empresa, E.AL_Web
 				FROM empresa_postulada AS EP
@@ -131,8 +132,11 @@ class Empresa{
 						(EP.empresa_AF_RIF=E.AF_RIF)
 				LEFT JOIN empresa_cod_arancel AS EMCA ON
 						(EMCA.empresa_AF_RIF=EP.empresa_AF_RIF)
-				WHERE EP.BI_Status=4 AND E.AF_RIF!='".$this->AF_RIF."' AND EP.evento_AF_CodEvento='".$this->AF_CodEvento."' AND (".$this->codigos.")	        
+				LEFT JOIN cita_empresa AS C ON
+						(C.empresa_AF_RIF='".$this->AF_RIF."')
+				WHERE EP.BI_Status=4 AND E.AF_RIF!='".$this->AF_RIF."' AND EP.evento_AF_CodEvento='".$this->AF_CodEvento."' AND (".$this->codigos.") AND (".$this->rifs.")	        
 				GROUP BY EP.empresa_AF_RIF";
+		
 		$resultado=$objConexion->ejecutar($query);
 		return $resultado;		
 	}

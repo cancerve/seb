@@ -5,7 +5,7 @@
 	require_once('../model/eventoCodArancelModel.php');	
 	require_once('../model/eventoPaisParticiModel.php');		
 	require_once('../model/paisModel.php');	
-	require_once('../includes/fecha.php'); 		
+	require_once('../includes/funciones.php'); 		
 	
 	$objEvento = new Evento();
 	$objCodArancel = new CodArancel();

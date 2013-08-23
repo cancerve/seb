@@ -3,6 +3,7 @@
 <?php require_once('../model/oficinaCModel.php'); ?>
 <?php require_once('../model/empresaPostuModel.php'); ?>
 <?php require_once('../model/empresaCodArancelModel.php'); ?>
+<?php require_once('../model/citaEmpresaModel.php'); ?>
 <?php require_once('../controller/sessionController.php'); ?>
 <?php
 ////////////////////////////// PARA TRAER OFICINAS COMERCIALES
@@ -86,8 +87,10 @@ if (isset($_POST['AF_CodEvento2'])){
 		$AF_RIF 		= $_SESSION['AF_RIF'];
 		$tabla			= '';
 		$codigos		= '';
+		$rifs			= '';
 						
 		$objEmpresa 			= new Empresa();
+		$objCitaEmpresa			= new CitaEmpresa();
 		$objEmpresaPostu 		= new EmpresaPostu();
 		$objEmpresaCodArancel 	= new EmpresaCodArancel();
 		
@@ -98,10 +101,20 @@ if (isset($_POST['AF_CodEvento2'])){
 		    $AL_CodArancel  = $objConexion->obtenerElemento($RS1,$x,"AL_CodArancel");
 			$codigos .= "EMCA.cod_arancel_AL_CodArancel='".$AL_CodArancel."' or ";
 		}
-
+		
 		$codigos = substr($codigos, 0, -4);
+		
+		$RS2		= $objCitaEmpresa->listarXempresa($objConexion,$AF_RIF);
+		$cantRS2	= $objConexion->cantidadRegistros($RS2);
+
+		for($w=0; $w<$cantRS2; $w++){
+		    $empresa_AF_RIF  = $objConexion->obtenerElemento($RS2,$w,"BI_Invita");
+			$rifs .= "E.AF_RIF!='".$empresa_AF_RIF."' and ";
+		}
+		
+		$rifs = substr($rifs, 0, -4);
 	
-		$RS 	= $objEmpresa->buscarXEventXempXcod($objConexion,$AF_CodEvento,$AF_RIF,$codigos);
+		$RS 	= $objEmpresa->buscarXEventXempXcod($objConexion,$AF_CodEvento,$AF_RIF,$codigos,$rifs);
 		$cantRS = $objConexion->cantidadRegistros($RS);
 
 		if ($cantRS>0){

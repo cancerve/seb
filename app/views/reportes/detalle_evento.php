@@ -3,7 +3,7 @@ require_once('../../controller/sessionController.php');
 require_once('../../model/eventoModel.php');
 require_once('../../model/eventoPaisParticiModel.php');
 require_once('../../model/eventoCodArancelModel.php');
-require_once('../../includes/fecha.php');
+require_once('../../includes/funciones.php');
 require('../../includes/pdf/fpdf.php'); 
 
 $objEvento 				= new Evento();

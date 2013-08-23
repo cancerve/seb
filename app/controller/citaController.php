@@ -17,8 +17,8 @@ if(isset($_REQUEST["origen"])){
 		$FE_Fecha				= $_REQUEST["FE_Fecha"];
 		$TI_Hora_Inicio 		= $_REQUEST["TI_Hora_Inicio"];
 		$TI_Hora_Final			= $_REQUEST["TI_Hora_Final"];
-		$NU_Mesa				= $_REQUEST["NU_Mesa"];
-		
+		$NU_Mesa				= $objCita->generarMesa($objConexion,$FE_Fecha,$TI_Hora_Inicio,$TI_Hora_Final);
+
 		$AF_RIF_Invita			= $_REQUEST["AF_RIF_Invita"];
 		$AF_RIF_Invitado		= $_REQUEST["AF_RIF_Invitado"];
 
@@ -26,7 +26,7 @@ if(isset($_REQUEST["origen"])){
 
 		$NU_Cita = $objCita->ultCita($objConexion);
 		
-		$objCitaEmpresa->insertar($objConexion,$AF_RIF_Invita,$NU_Cita,1);
+		$objCitaEmpresa->insertar($objConexion,$AF_RIF_Invita,$NU_Cita,$AF_RIF_Invitado);
 		$objCitaEmpresa->insertar($objConexion,$AF_RIF_Invitado,$NU_Cita,0);
 		
 		$mensaje='Empresa Citada Exitosamente.';

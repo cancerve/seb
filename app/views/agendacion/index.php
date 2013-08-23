@@ -58,7 +58,7 @@
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td style="text-align: justify"><a href="cita/index.php">&nbsp;- Administrar Citas</a></td>
+            <td style="text-align: justify"><a href="cita/index.php">&nbsp;- Crear Citas de Negocio</a></td>
           </tr>
           <tr>
             <td style="text-align: justify"><a href="agenda/index.php">&nbsp;- Administrar Agenda</a></td>

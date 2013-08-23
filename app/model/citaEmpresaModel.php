@@ -15,5 +15,14 @@ class CitaEmpresa{
 		$resultado=$objConexion->ejecutar($query);
 		return true;
 	}
+	
+	function listarXempresa($objConexion,$empresa_AF_RIF){
+		$this->empresa_AF_RIF = $empresa_AF_RIF;
+		$query="SELECT C.*
+				FROM cita_empresa AS C
+				WHERE C.empresa_AF_RIF = '".$this->empresa_AF_RIF."'";
+		$resultado=$objConexion->ejecutar($query);
+		return $resultado;		
+	}	
 }
 ?>
