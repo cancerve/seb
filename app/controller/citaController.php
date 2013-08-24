@@ -30,7 +30,28 @@ if(isset($_REQUEST["origen"])){
 		$objCitaEmpresa->insertar($objConexion,$AF_RIF_Invitado,$NU_Cita,0);
 		
 		$mensaje='Empresa Citada Exitosamente.';
-		header("Location: ../views/agendacion/cita/index.php?mensaje=$mensaje");
+		header("Location: ../views/agendacion/citas/index.php?mensaje=$mensaje");
 	}
+/////////////////// ACEPTAR CITA ////////////////	
+	if($_REQUEST["origen"]=='Aceptar'){
+
+		$NU_Cita	= $_REQUEST["NU_Cita"];
+
+		$objCita->aceptarCita($objConexion,$NU_Cita);
+		
+		$mensaje='Cita Confirmada Exitosamente.';
+		header("Location: ../views/agendacion/citas/index.php?mensaje=$mensaje");
+	}
+/////////////////// RECHAZAR CITA ////////////////	
+	if($_REQUEST["origen"]=='Rechazar'){
+
+		$NU_Cita	= $_REQUEST["NU_Cita"];
+
+		$objCita->rechazarCita($objConexion,$NU_Cita);
+		
+		$mensaje='Cita Rechazada Exitosamente.';
+		header("Location: ../views/agendacion/citas/index.php?mensaje=$mensaje");
+	}	
+		
 }
 ?>

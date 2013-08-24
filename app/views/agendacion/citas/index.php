@@ -16,9 +16,30 @@ $objEvento = new Evento();
 <script type="text/javascript" src="../../../js/select_buscar.js"></script>
 
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
+    function abrir_dialog() {
+		var mensaje = "<?php echo $_GET['mensaje']; ?>";
+		if(mensaje){
+		  $( "#dialog" ).dialog({
+			  show: "blind",
+			  hide: "explode",
+			  modal: true,
+			  buttons: {
+				Aceptar: function() {
+				  $( this ).dialog( "close" );
+				}
+			  }
+		  });
+		}
+    };
+</script>
 </head>
-<body>
+
+<body onLoad="abrir_dialog();">
+<div id="dialog" title="Mensaje" style="display:none;">
+    <span class="ui-icon ui-icon-circle-check"></span>
+    <p><?php echo $_GET['mensaje']; ?></p>
+</div>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td height="25" bgcolor="#CCCCCC" class="Negrita">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GESTIONAR SOLICITUDES DE CITAS</td>

@@ -22,6 +22,29 @@ class Cita{
 		return true;
 	}
 	
+	function aceptarCita($objConexion,$NU_Cita){
+		$this->NU_Cita = $NU_Cita;
+		$query = "UPDATE cita SET aprobada=1 
+				  WHERE NU_Cita=".$this->NU_Cita;	
+		
+		$resultado = $objConexion->ejecutar($query);
+		return true;
+	}
+	
+	function rechazarCita($objConexion,$NU_Cita){
+		$this->NU_Cita = $NU_Cita;
+		$query = "DELETE FROM cita 
+				  WHERE NU_Cita=".$this->NU_Cita;	
+		
+		$resultado = $objConexion->ejecutar($query);
+		
+		$query = "DELETE FROM cita_empresa 
+				  WHERE cita_NU_Cita = ".$this->NU_Cita;	
+		
+		$resultado = $objConexion->ejecutar($query);		
+		return true;
+	}	
+	
 	private function generarNuevo($objConexion){
 		$this->NU_Cita=0;
 		$query="SELECT MAX(NU_Cita) as NU_Cita
@@ -60,7 +83,19 @@ class Cita{
 		return $resultado;		
 	}
 
-	function buscarXresponder($objConexion,$AF_RIF,$Evento){
+	function buscarXresponder($objConexion,$AF_RIF){
+		$this->AF_RIF	= $AF_RIF;
+		$query="SELECT C.*, CE.*
+				FROM cita AS C
+				LEFT JOIN cita_empresa AS CE
+					ON (CE.cita_NU_Cita=C.NU_Cita)
+				WHERE CE.BI_Invita='".$this->AF_RIF."' and C.aprobada IS NULL";
+		
+		$resultado=$objConexion->ejecutar($query);
+		return $resultado;		
+	}
+	
+	function buscarXresponder2($objConexion,$AF_RIF,$Evento){
 		$this->AF_RIF	= $AF_RIF;
 		$this->Evento 	= $Evento;
 		$query="SELECT C.*, CE.*, E.AF_Razon_Social
@@ -72,8 +107,9 @@ class Cita{
 				WHERE CE.BI_Invita='".$this->AF_RIF."' and C.aprobada IS NULL".$this->Evento;
 		
 		$resultado=$objConexion->ejecutar($query);
+		
 		return $resultado;		
-	}
+	}	
 
 	function buscarXhorario($objConexion,$evento_AF_CodEvento,$FE_Fecha,$TI_Hora_Inicio,$TI_Hora_Final,$AF_RIF_Invita){
 		$this->evento_AF_CodEvento	= $evento_AF_CodEvento;

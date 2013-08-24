@@ -137,7 +137,7 @@ if (isset($_POST['AF_CodEvento2'])){
 			  $AL_Web=$objConexion->obtenerElemento($RS,$i,"AL_Web");	
 			  $pais_AL_CodPais = $objConexion->obtenerElemento($RS,$i,"pais_AL_CodPais");
 
-			  $tabla .= '<tr><td class="TablaRojaGridTD">'.$k.'</td><td class="TablaRojaGridTD">'.$pais_AL_CodPais.'</td><td class="TablaRojaGridTD" align="left">'.$AF_Razon_Social.'</td><td class="TablaRojaGridTD" align="left">'.$AF_Clasificacion_Empresa.'</td><td class="TablaRojaGridTD" align="left">'.$AL_Web.'</td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_ver.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/agendacion/cita/citar.php?AF_RIF='.$AF_RIF.'&AF_CodEvento='.$AF_CodEvento.'"><img src="http://localhost/seb/app/images/bton_cita.gif" width="31" height="31"></a></td></tr>';
+			  $tabla .= '<tr><td class="TablaRojaGridTD">'.$k.'</td><td class="TablaRojaGridTD">'.$pais_AL_CodPais.'</td><td class="TablaRojaGridTD" align="left">'.$AF_Razon_Social.'</td><td class="TablaRojaGridTD" align="left">'.$AF_Clasificacion_Empresa.'</td><td class="TablaRojaGridTD" align="left">'.$AL_Web.'</td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_ver.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/agendacion/citar/citar.php?AF_RIF='.$AF_RIF.'&AF_CodEvento='.$AF_CodEvento.'"><img src="http://localhost/seb/app/images/bton_cita.gif" width="31" height="31"></a></td></tr>';
 
 			}
 			$tabla .= '</table><input type="hidden" value="'.$k.'" name="cantidad" id="cantidad">';			
@@ -232,15 +232,16 @@ if (isset($_POST['AF_CodEvento2'])){
 		$AF_RIF 		= $_SESSION['AF_RIF'];
 		$Evento			= " and evento_AF_CodEvento='".$AF_CodEvento."'";
 		
-		$RS		= $objCita->buscarXresponder($objConexion,$AF_RIF,$Evento);
+		$RS		= $objCita->buscarXresponder2($objConexion,$AF_RIF,$Evento);
 		$cant	= $objConexion->cantidadRegistros($RS);
 		if ($cant>0){
 			
-			$tabla = '<table width="95%" align="center" class="TablaRojaGrid"><tr class="TablaRojaGridTRTitulo"><th scope="col">Evento</th><th scope="col">Dia</th><th scope="col">Hora</th><th scope="col">Mesa</th><th scope="col">Invita</th><th scope="col">Ver</th><th scope="col">Aceptar</th><th scope="col">Rechazar</th></tr>';
+			$tabla = '<table width="95%" align="center" class="TablaRojaGrid"><tr class="TablaRojaGridTRTitulo"><th scope="col">Dia</th><th scope="col">Hora</th><th scope="col">Mesa</th><th scope="col" width="300">Invita</th><th scope="col" width="50">Ver</th><th scope="col">Aceptar</th><th scope="col">Rechazar</th></tr>';
 			$k=0;
 			for($i=0;$i<$cant;$i++){
 				
 			  $k++;
+			  $NU_Cita 			   =$objConexion->obtenerElemento($RS,$i,"NU_Cita");
 			  $evento_AF_CodEvento =$objConexion->obtenerElemento($RS,$i,"evento_AF_CodEvento");
 			  $FE_Fecha			   =$objConexion->obtenerElemento($RS,$i,"FE_Fecha");
 			  $TI_Hora_Inicio 	   = $objConexion->obtenerElemento($RS,$i,"TI_Hora_Inicio");
@@ -249,7 +250,7 @@ if (isset($_POST['AF_CodEvento2'])){
 			  $AF_Razon_Social 	   = $objConexion->obtenerElemento($RS,$i,"AF_Razon_Social");
 			  $empresa_AF_RIF 	   = $objConexion->obtenerElemento($RS,$i,"empresa_AF_RIF");
   
-			  $tabla .= '<tr><td class="TablaRojaGridTD">'.$evento_AF_CodEvento.'</td><td class="TablaRojaGridTD">'.date("d-m-Y",strtotime($FE_Fecha)).'</td><td class="TablaRojaGridTD">'.date("H:i",strtotime($TI_Hora_Inicio)).' a '.date("H:i",strtotime($TI_Hora_Final)).'</td><td class="TablaRojaGridTD">'.$NU_Mesa.'</td><td class="TablaRojaGridTD" align="left">'.$AF_Razon_Social.'</td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$empresa_AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_ver.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$empresa_AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_confir.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$empresa_AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_rechaz.gif" width="31" height="31"></a></td></tr>';
+			  $tabla .= '<tr><td class="TablaRojaGridTD">'.date("d-m-Y",strtotime($FE_Fecha)).'</td><td class="TablaRojaGridTD">'.date("H:i",strtotime($TI_Hora_Inicio)).' a '.date("H:i",strtotime($TI_Hora_Final)).'</td><td class="TablaRojaGridTD">'.$NU_Mesa.'</td><td class="TablaRojaGridTD" align="left">'.$AF_Razon_Social.'</td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$empresa_AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_ver.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/controller/citaController.php?NU_Cita='.$NU_Cita.'&&origen=Aceptar"><img src="http://localhost/seb/app/images/bton_confir.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/controller/citaController.php?NU_Cita='.$NU_Cita.'&&origen=Rechazar"><img src="http://localhost/seb/app/images/bton_rechaz.gif" width="31" height="31"></a></td></tr>';
 			}
 
 			$tabla .= '</table><input type="hidden" value="'.$k.'" name="cantidad" id="cantidad">';			

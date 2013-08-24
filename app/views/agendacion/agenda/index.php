@@ -28,7 +28,7 @@ $objEvento = new Evento();
   <ul>
     <li><a href="#tabs-1">General</a></li>
   </ul>
-  <form name="form1" id="form1" method="post" action="../../../controller/empresaController.php" enctype="multipart/form-data">
+  <form name="form1" id="form1" method="post" action="../../../views/reportes/agenda_empresa.php" target="_blank" enctype="multipart/form-data">
   <div id="tabs-1">
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="">
       <tr>
@@ -47,9 +47,9 @@ $objEvento = new Evento();
             <tr valign="baseline">
               <td nowrap align="right">Evento:</td>
               <td>
-              <select name="AF_CodEvento" id="AF_CodEvento" style="width:350px">
-                <option selected="selected">[ Seleccione ]</option>
-                <?php 
+                <select name="AF_CodEvento" id="AF_CodEvento" style="width:350px">
+                  <option selected="selected">[ Seleccione ]</option>
+                  <?php 
                             $rsEvento=$objEvento->listar($objConexion);
                             for($i=0;$i<$objConexion->cantidadRegistros($rsEvento);$i++){
                                   $value=$objConexion->obtenerElemento($rsEvento,$i,"AF_CodEvento");
@@ -57,19 +57,16 @@ $objEvento = new Evento();
                                   echo "<option value=".$value.">".$des."</option>";
                             }  
                         ?>
-              </select>
-               </td>
-            </tr>
-            <tr valign="baseline">
-              <td nowrap align="right">&nbsp;</td>
-              <td>&nbsp;</td>
+                  </select>
+                </td>
             </tr>
             <tr valign="baseline">
               <td colspan="2" nowrap>&nbsp;</td>
-              </tr>
+            </tr>
             <tr valign="baseline">
-              <td colspan="2" align="center"><input name="button2" type="button" class="BotonRojo" id="button2" value="[ Ver Agenda ]" onClick="javascript:alert('En Construccion...')" />
-                <input name="button" type="button" class="BotonRojo" id="button" value="[ Cancelar ]" onClick="javascript:window.location='../index.php'" /></td>
+              <td colspan="2" align="center"><input name="button2" type="submit" class="BotonRojo" id="button2" value="[ Ver Agenda ]" onClick="" />
+                <input name="button" type="button" class="BotonRojo" id="button" value="[ Cancelar ]" onClick="javascript:window.location='../index.php'" />
+                <input name="AF_RIF" type="hidden" id="AF_RIF" value="<?=$_SESSION['AF_RIF']?>"></td>
               </tr>
             </table>
           </td>
