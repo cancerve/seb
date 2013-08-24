@@ -43,7 +43,7 @@ $objCita 	= new Cita();
             <tr>
               <td><table width="100%" border="0" cellspacing="2" cellpadding="2" class="TextonegroPEQ">
                 <tr>
-                  <td width="5"><input name="button2" type="button" class="BotonRojo" id="button2" value="[ Cancelar ]" onClick="javascript:window.history.back()"></td>
+                  <td width="5"><input name="button2" type="button" class="BotonRojo" id="button2" value="[ Cancelar ]" onClick="javascript:window.location='index.php'"></td>
                   <td width="15">&nbsp;</td>
                   <td width="5" bgcolor="#FFCC00" style="border:#000 solid 1px">&nbsp;</td>
                   <td>Ocupado por la Empresa Interesada</td>
@@ -121,6 +121,7 @@ $objCita 	= new Cita();
 		$actual = $actual1;
 
 		for($y=0;$y<$columnas;$y++){ 
+		//////////////// DEFINICION DE COLOR Y TIPO DE ESPACIO SEGUN LAS CITAS
 			$ocupado1 		= 0;
 			$ocupado2 		= 0;		
 			$FE_Fecha = date("Y-m-d", strtotime($Fecha[$y]));
@@ -130,7 +131,7 @@ $objCita 	= new Cita();
 						
 			if ($cantCita>0){
 				$color = 'azul.gif'; 
-				$leyenda = 'Cita con: '.mayuscula($objConexion->obtenerElemento($cita,0,"AF_Razon_Social")); 															
+				$leyenda = 'Ocupado por su Empresa'; 															
 				$ocupado1 = 1;
 			}
 			
@@ -150,9 +151,9 @@ $objCita 	= new Cita();
 			}
 			if ($ocupado1==0 and $ocupado2==0){
 				$color = 'blank.gif';
-				$leyenda = '';
+				$leyenda = 'Disponible';
 ?>	
-			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=$FE_Fecha?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="espacio" src="../../../images/<?=$color?>" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/<?=$color?>')" alt="Empresa XXxxx" /></a></td>			
+			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=$FE_Fecha?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="<?=$leyenda?>" src="../../../images/<?=$color?>" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/<?=$color?>')" /></a></td>			
 <?php
 			}else{
 ?>
@@ -187,11 +188,50 @@ $objCita 	= new Cita();
 		
 		$actual = $actual1;
 
-		for($y=0;$y<$columnas;$y++){ ?>
+		for($y=0;$y<$columnas;$y++){ 
+//////////////// DEFINICION DE COLOR Y TIPO DE ESPACIO SEGUN LAS CITAS
+			$ocupado1 		= 0;
+			$ocupado2 		= 0;		
+			$FE_Fecha = date("Y-m-d", strtotime($Fecha[$y]));
 
-			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=date("Y-m-d", strtotime($Fecha[$y]))?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&NU_Mesa=<?=$NU_Mesa?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="espacio" src="../../../images/blank.gif" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/blank.gif')" alt="Empresa XXxxx" /></a></td>
-
-<?php	}	echo "</tr>";	} ?>
+			$cita = $objCita->buscarXhorario($objConexion,$AF_CodEvento,$FE_Fecha,$Hora_Inicio,$Hora_Final,$AF_RIF_Invita);
+			$cantCita  = $objConexion->cantidadRegistros($cita);
+						
+			if ($cantCita>0){
+				$color = 'azul.gif'; 
+				$leyenda = 'Ocupado por su Empresa'; 															
+				$ocupado1 = 1;
+			}
+			
+			$RS1 = $objCita->buscarXhorario($objConexion,$AF_CodEvento,$FE_Fecha,$Hora_Inicio,$Hora_Final,$AF_RIF_Invitado);
+			$cantRS1  = $objConexion->cantidadRegistros($RS1);			
+			
+			if ($cantRS1>0){
+				$color = 'amarillo.gif'; 
+				$leyenda = 'Ocupado por la Empresa Interesada'; 															
+				$ocupado2 = 1;
+			}
+			
+			if (($ocupado1==1) and ($ocupado2==1)){
+				$color = 'rojo.gif'; 
+				$leyenda = 'Ocupado por ambas Empresas'; 															
+			
+			}
+			if ($ocupado1==0 and $ocupado2==0){
+				$color = 'blank.gif';
+				$leyenda = 'Disponible';
+?>	
+			<td class="TablaRojaGridTDHorario"><a href="../../../controller/citaController.php?evento_AF_CodEvento=<?=$AF_CodEvento?>&&FE_Fecha=<?=$FE_Fecha?>&&TI_Hora_Inicio=<?=$Hora_Inicio?>&&TI_Hora_Final=<?=$Hora_Final?>&&AF_RIF_Invita=<?=$AF_RIF_Invita?>&&AF_RIF_Invitado=<?=$AF_RIF_Invitado?>&&origen=Citar"><img title="<?=$leyenda?>" src="../../../images/<?=$color?>" class="BotonHorarioDisponible" onmouseover="$(this).attr('src','../../../images/gris.gif')" onMouseOut="$(this).attr('src','../../../images/<?=$color?>')" /></a></td>			
+<?php
+			}else{
+?>
+				<td class="TablaRojaGridTDHorario"><img title="<?=$leyenda?>" src="../../../images/<?=$color?>" class="BotonHorarioDisponible" /></td>
+<?php				
+			}
+		}	
+		echo "</tr>";	
+	} 
+?>
  
  </table>
 <!-- //////////////////////////////////////////////////////////////// -->

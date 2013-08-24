@@ -36,9 +36,10 @@ $canRS1 = $objConexion->cantidadRegistros($RS1);
 
 <script type="text/javascript" src="../../js/jquery.js"></script>
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
-<script type="text/javascript" src="../../js/funciones.js"></script>
-<script type="text/javascript" src="../../js/select_dependientes.js"></script>
 <script type="text/javascript" src="../../js/jquery.treeview.js"></script>
+<script type="text/javascript" src="../../js/funciones2.js"></script>
+<script type="text/javascript" src="../../js/select_dependientes.js"></script>
+
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <body onLoad="cargaContenido('pais_AL_CodPais',<?=$ciudad_AF_CodCiudad?>)">

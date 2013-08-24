@@ -1,6 +1,7 @@
 <?php 
 require_once('../controller/sessionController.php'); 
 require_once('../model/empresaPostuModel.php'); 
+require_once('../model/citaModel.php'); 
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -82,6 +83,27 @@ if ($cantRS>0){ ?>
           Participacion <br>
         </a></td>
         <td width="90" align="center" class="Negrita"><a href="participacion/index.php">Haga clic aqui para Confirmar su Participacion en un Evento</a></td>
+        </tr>
+    </table>
+    </td>
+  </tr>
+<?php } ?>  
+<?php 
+$objCita = new Cita();
+$RS1 = $objCita->buscarXresponder($objConexion,$_SESSION['AF_RIF']);
+$cantRS1 = $objConexion->cantidadRegistros($RS1);
+if ($cantRS1>0){ ?>
+  <tr>
+    <td align="center">
+    
+    <table width="180" border="0" align="center" cellpadding="1" cellspacing="5">
+      <tr>
+        <td width="90" height="20" align="center" class="BotonGris"><a href="agendacion/citas/index.php"> <img src="../images/cita.jpg" width="51" height="51"><br>
+          Gestionar<br>
+          Citas
+          <br>
+        </a></td>
+        <td width="90" align="center" class="Negrita"><a href="agendacion/citas/index.php">Haga clic aqui para Gestionar las Solicitudes de Citas Pendientes</a></td>
         </tr>
     </table>
     </td>

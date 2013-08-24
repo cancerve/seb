@@ -1,10 +1,13 @@
-<?php require_once('../model/empresaModel.php'); ?>
-<?php require_once('../model/eventoPaisParticiModel.php'); ?>
-<?php require_once('../model/oficinaCModel.php'); ?>
-<?php require_once('../model/empresaPostuModel.php'); ?>
-<?php require_once('../model/empresaCodArancelModel.php'); ?>
-<?php require_once('../model/citaEmpresaModel.php'); ?>
-<?php require_once('../controller/sessionController.php'); ?>
+<?php 
+  require_once('../model/empresaModel.php');
+  require_once('../model/eventoPaisParticiModel.php');
+  require_once('../model/oficinaCModel.php');
+  require_once('../model/empresaPostuModel.php');
+  require_once('../model/empresaCodArancelModel.php');
+  require_once('../model/citaEmpresaModel.php');
+  require_once('../model/citaModel.php');
+  require_once('../controller/sessionController.php'); 
+?>
 <?php
 ////////////////////////////// PARA TRAER OFICINAS COMERCIALES
 if (isset($_POST['AF_CodEvento2'])){
@@ -87,8 +90,7 @@ if (isset($_POST['AF_CodEvento2'])){
 		$AF_RIF 		= $_SESSION['AF_RIF'];
 		$tabla			= '';
 		$codigos		= '';
-		$rifs			= '';
-						
+		$rifs			= '';				
 		$objEmpresa 			= new Empresa();
 		$objCitaEmpresa			= new CitaEmpresa();
 		$objEmpresaPostu 		= new EmpresaPostu();
@@ -96,9 +98,9 @@ if (isset($_POST['AF_CodEvento2'])){
 		
 		$RS1 		= $objEmpresaCodArancel->listarXempresa($objConexion,$AF_RIF);
 		$cantRS1 	= $objConexion->cantidadRegistros($RS1);
-
+		
 		for($x=0; $x<$cantRS1; $x++){
-		    $AL_CodArancel  = $objConexion->obtenerElemento($RS1,$x,"AL_CodArancel");
+			$AL_CodArancel  = $objConexion->obtenerElemento($RS1,$x,"AL_CodArancel");
 			$codigos .= "EMCA.cod_arancel_AL_CodArancel='".$AL_CodArancel."' or ";
 		}
 		
@@ -107,13 +109,18 @@ if (isset($_POST['AF_CodEvento2'])){
 		$RS2		= $objCitaEmpresa->listarXempresa($objConexion,$AF_RIF);
 		$cantRS2	= $objConexion->cantidadRegistros($RS2);
 
-		for($w=0; $w<$cantRS2; $w++){
-		    $empresa_AF_RIF  = $objConexion->obtenerElemento($RS2,$w,"BI_Invita");
-			$rifs .= "E.AF_RIF!='".$empresa_AF_RIF."' and ";
+		if ($cantRS2>0){
+			$rifs = 'AND (';	
+			for($w=0; $w<$cantRS2; $w++){
+				$empresa_AF_RIF  = $objConexion->obtenerElemento($RS2,$w,"BI_Invita");
+				$rifs .= "E.AF_RIF!='".$empresa_AF_RIF."' and ";
+				$empresa_AF_RIF  =$objConexion->obtenerElemento($RS2,$w,"empresa_AF_RIF");
+				$rifs .= "E.AF_RIF!='".$empresa_AF_RIF."' and ";				
+			}
+		
+			$rifs = substr($rifs, 0, -4).")";
 		}
 		
-		$rifs = substr($rifs, 0, -4);
-	
 		$RS 	= $objEmpresa->buscarXEventXempXcod($objConexion,$AF_CodEvento,$AF_RIF,$codigos,$rifs);
 		$cantRS = $objConexion->cantidadRegistros($RS);
 
@@ -215,5 +222,41 @@ if (isset($_POST['AF_CodEvento2'])){
 		}else{
 			echo '<b>No existen Empresas Registradas que coincidan con el Codigo Arancelario relacionado al Evento Seleccionado</b>';
 		}
+	}
+////////////////////////////////////////// PARA TRAER SOLICITUDES DE CITAS
+	if (isset($_POST['Soli_Citas'])){
+
+		$objCita = new Cita();
+		
+		$AF_CodEvento	= $_POST['Soli_Citas'];
+		$AF_RIF 		= $_SESSION['AF_RIF'];
+		$Evento			= " and evento_AF_CodEvento='".$AF_CodEvento."'";
+		
+		$RS		= $objCita->buscarXresponder($objConexion,$AF_RIF,$Evento);
+		$cant	= $objConexion->cantidadRegistros($RS);
+		if ($cant>0){
+			
+			$tabla = '<table width="95%" align="center" class="TablaRojaGrid"><tr class="TablaRojaGridTRTitulo"><th scope="col">Evento</th><th scope="col">Dia</th><th scope="col">Hora</th><th scope="col">Mesa</th><th scope="col">Invita</th><th scope="col">Ver</th><th scope="col">Aceptar</th><th scope="col">Rechazar</th></tr>';
+			$k=0;
+			for($i=0;$i<$cant;$i++){
+				
+			  $k++;
+			  $evento_AF_CodEvento =$objConexion->obtenerElemento($RS,$i,"evento_AF_CodEvento");
+			  $FE_Fecha			   =$objConexion->obtenerElemento($RS,$i,"FE_Fecha");
+			  $TI_Hora_Inicio 	   = $objConexion->obtenerElemento($RS,$i,"TI_Hora_Inicio");
+  			  $TI_Hora_Final 	   = $objConexion->obtenerElemento($RS,$i,"TI_Hora_Final");
+  			  $NU_Mesa 			   = $objConexion->obtenerElemento($RS,$i,"NU_Mesa");
+			  $AF_Razon_Social 	   = $objConexion->obtenerElemento($RS,$i,"AF_Razon_Social");
+			  $empresa_AF_RIF 	   = $objConexion->obtenerElemento($RS,$i,"empresa_AF_RIF");
+  
+			  $tabla .= '<tr><td class="TablaRojaGridTD">'.$evento_AF_CodEvento.'</td><td class="TablaRojaGridTD">'.date("d-m-Y",strtotime($FE_Fecha)).'</td><td class="TablaRojaGridTD">'.date("H:i",strtotime($TI_Hora_Inicio)).' a '.date("H:i",strtotime($TI_Hora_Final)).'</td><td class="TablaRojaGridTD">'.$NU_Mesa.'</td><td class="TablaRojaGridTD" align="left">'.$AF_Razon_Social.'</td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$empresa_AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_ver.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$empresa_AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_confir.gif" width="31" height="31"></a></td><td class="TablaRojaGridTD"><a href="http://localhost/seb/app/views/reportes/detalle_empresa.php?AF_RIF='.$empresa_AF_RIF.'" target="_blank"><img src="http://localhost/seb/app/images/bton_rechaz.gif" width="31" height="31"></a></td></tr>';
+			}
+
+			$tabla .= '</table><input type="hidden" value="'.$k.'" name="cantidad" id="cantidad">';			
+			echo $tabla;  
+		}else{
+			echo '<b>No existen Solicitudes de Citas para el Evento Seleccionado.</b>';
+		}
 	}	
+		
 ?>

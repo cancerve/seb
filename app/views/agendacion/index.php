@@ -58,10 +58,13 @@
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td style="text-align: justify"><a href="cita/index.php">&nbsp;- Crear Citas de Negocio</a></td>
+            <td style="text-align: justify"><a href="citar/index.php">&nbsp;- Crear Citas de Negocio</a></td>
           </tr>
           <tr>
-            <td style="text-align: justify"><a href="agenda/index.php">&nbsp;- Administrar Agenda</a></td>
+            <td style="text-align: justify"><a href="citas/index.php">&nbsp;- Gestionar Solicitudes de Citas</a></td>
+          </tr>
+          <tr>
+            <td style="text-align: justify"><a href="agenda/index.php">&nbsp;-  Agenda</a></td>
           </tr>
           <tr>
             <td style="text-align: justify">&nbsp;</td>

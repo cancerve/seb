@@ -4,7 +4,8 @@
 	require_once("../includes/captcha/securimage.php");	
 	require_once("../model/usuarioModel.php");
 	require_once("../model/empresaModel.php");
-	require_once("../model/empresaPostuModel.php");	
+	require_once("../model/empresaPostuModel.php");
+	require_once("../model/citaModel.php");		
 ?>
 <?php
 if(isset($_POST["submit"])){
@@ -24,7 +25,7 @@ if(isset($_POST["submit"])){
 		
 		if (($encontrado) and ($valid))
 		{
-			session_start();
+			//session_start();
 			$_SESSION["AF_Usuario"] = $AF_Usuario;			
 
 			$RS = $objUsuario->buscarUsuario($objConexion,$AF_Usuario);
@@ -37,16 +38,24 @@ if(isset($_POST["submit"])){
 				$objEmpresaPostu = new EmpresaPostu();
 				$RS = $objEmpresaPostu->buscarXstatus($objConexion,$AF_RIF,3);
 				$cantRS = $objConexion->cantidadRegistros($RS);
+				
+				$objCita = new Cita();
+				$RS2 = $objCita->buscarXresponder($objConexion,$AF_RIF);
+				$cantRS2 = $objConexion->cantidadRegistros($RS2);
 
+				if ($cantRS2 > 0){
+					$mensaje="ATENCION: Usted tiene nuevas solicitudes de Citas de Negocios. Debe Aprobar o Rechazar dichas solicitudes, para continuar con el proceso de elaboracion de la Agenda.";
+				}
 				if ($cantRS > 0){
 					$mensaje="IMPORTANTE: Su empresa ha sido seleccionada a participar en un Nuevo Evento. Debe confirmar su participacion en el mismo, para continuar con el proceso.";
 				}
 				if ($AF_Razon_Social == ''){
 					$mensaje="IMPORTANTE: Debe actualizar el Perfil de la Empresa para poder continuar.";
 				}
-					$_SESSION["AF_Razon_Social"] = $AF_Razon_Social;
-					$_SESSION["AF_RIF"] 		 = $AF_RIF;
-					header("Location: ../views/index.php?mensaje=$mensaje");
+
+				$_SESSION["AF_Razon_Social"] = $AF_Razon_Social;
+				$_SESSION["AF_RIF"] 		 = $AF_RIF;
+				header("Location: ../views/index.php?mensaje=$mensaje");
 			}else{
 				header("Location: ../views/index.php");
 			}

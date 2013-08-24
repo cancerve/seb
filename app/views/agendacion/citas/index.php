@@ -1,8 +1,9 @@
 <?php 
 require_once('../../../controller/sessionController.php'); 
 require_once('../../../model/eventoModel.php');
+require_once('../../../includes/funciones.php');
 
-$objEvento = new Evento(); 
+$objEvento = new Evento();
 ?>
 <html>
 <head>
@@ -20,13 +21,13 @@ $objEvento = new Evento();
 <body>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td height="25" bgcolor="#CCCCCC" class="Negrita">&nbsp;&nbsp;&nbsp;&nbsp;AGENDA</td>
+      <td height="25" bgcolor="#CCCCCC" class="Negrita">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GESTIONAR SOLICITUDES DE CITAS</td>
     </tr>
   </table>
   <br>
   <div id="tabs" style="width:730; margin-left:10px" align="center">
   <ul>
-    <li><a href="#tabs-1">General</a></li>
+    <li><a href="#tabs-1">Solicitudes</a></li>
   </ul>
   <form name="form1" id="form1" method="post" action="../../../controller/empresaController.php" enctype="multipart/form-data">
   <div id="tabs-1">
@@ -35,7 +36,7 @@ $objEvento = new Evento();
         <td bordercolor="#F8F8F8">
           <table width="100%" border="0" cellpadding="2" cellspacing="2" class="Textonegro" bgcolor="#FFFFFF">
             <tr bgcolor="#CCCCCC">
-              <td colspan="2" class="BlancoGris">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Llene el siguiente formulario para visualizar la Agenda del Evento Seleccionado</td>
+              <td colspan="2" class="BlancoGris">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Escoja el Evento para el cual desea ver las solicitudes disponibles</td>
             </tr>
             <tr bgcolor="#CCCCCC">
               <td colspan="2" class="BlancoGrisClaro">&nbsp;Todos los campos con asteriscos (<span class="Rojita">&nbsp;*&nbsp;</span>) son de car&aacute;cter obligatorio.</td>
@@ -47,16 +48,16 @@ $objEvento = new Evento();
             <tr valign="baseline">
               <td nowrap align="right">Evento:</td>
               <td>
-              <select name="AF_CodEvento" id="AF_CodEvento" style="width:350px">
+              <select name="AF_CodEvento" id="AF_CodEvento" onChange="load_Soli_Citas()" style="width:350px">
                 <option selected="selected">[ Seleccione ]</option>
                 <?php 
-                            $rsEvento=$objEvento->listar($objConexion);
-                            for($i=0;$i<$objConexion->cantidadRegistros($rsEvento);$i++){
-                                  $value=$objConexion->obtenerElemento($rsEvento,$i,"AF_CodEvento");
-                                  $des=$objConexion->obtenerElemento($rsEvento,$i,"AF_Nombre_Evento");
-                                  echo "<option value=".$value.">".$des."</option>";
-                            }  
-                        ?>
+					$rsEvento=$objEvento->listar($objConexion);
+					for($i=0;$i<$objConexion->cantidadRegistros($rsEvento);$i++){
+						  $value=$objConexion->obtenerElemento($rsEvento,$i,"AF_CodEvento");
+						  $des=$objConexion->obtenerElemento($rsEvento,$i,"AF_Nombre_Evento");
+						  echo "<option value=".$value.">".$des."</option>";
+					}  
+				?>
               </select>
                </td>
             </tr>
@@ -65,12 +66,16 @@ $objEvento = new Evento();
               <td>&nbsp;</td>
             </tr>
             <tr valign="baseline">
-              <td colspan="2" nowrap>&nbsp;</td>
+              <td colspan="2" nowrap><div id="myDiv"></div></td>
               </tr>
             <tr valign="baseline">
-              <td colspan="2" align="center"><input name="button2" type="button" class="BotonRojo" id="button2" value="[ Ver Agenda ]" onClick="javascript:alert('En Construccion...')" />
-                <input name="button" type="button" class="BotonRojo" id="button" value="[ Cancelar ]" onClick="javascript:window.location='../index.php'" /></td>
-              </tr>
+              <td colspan="2" align="right" nowrap>&nbsp;</td>
+            </tr>
+            <tr style="text-align:center">
+              <td colspan="2" nowrap><input name="button" type="button" class="BotonRojo" id="button" value="[ Cancelar ]" onClick="javascript:window.location='../index.php'" />
+                <input name="origen" type="hidden" id="origen" value="Citas"></td>
+            </tr>
+
             </table>
           </td>
       </tr>

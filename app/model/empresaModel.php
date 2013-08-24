@@ -134,7 +134,7 @@ class Empresa{
 						(EMCA.empresa_AF_RIF=EP.empresa_AF_RIF)
 				LEFT JOIN cita_empresa AS C ON
 						(C.empresa_AF_RIF='".$this->AF_RIF."')
-				WHERE EP.BI_Status=4 AND E.AF_RIF!='".$this->AF_RIF."' AND EP.evento_AF_CodEvento='".$this->AF_CodEvento."' AND (".$this->codigos.") AND (".$this->rifs.")	        
+				WHERE EP.BI_Status=4 AND E.AF_RIF!='".$this->AF_RIF."' AND EP.evento_AF_CodEvento='".$this->AF_CodEvento."' AND (".$this->codigos.")".$this->rifs."	        
 				GROUP BY EP.empresa_AF_RIF";
 		
 		$resultado=$objConexion->ejecutar($query);
