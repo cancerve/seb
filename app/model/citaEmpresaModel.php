@@ -24,6 +24,21 @@ class CitaEmpresa{
 		
 		$resultado=$objConexion->ejecutar($query);
 		return $resultado;		
-	}	
+	}
+
+	function listarSoloAgenda($objConexion,$AF_RIF){
+		$this->AF_RIF = $AF_RIF;
+		$query="SELECT E.AF_CodEvento, E.AF_Nombre_Evento
+				FROM cita_empresa AS CE
+				LEFT JOIN cita AS C
+					ON (C.NU_Cita=CE.cita_NU_Cita)
+				LEFT JOIN evento AS E
+					ON (E.AF_CodEvento=C.evento_AF_CodEvento)
+				WHERE empresa_AF_RIF='".$this->AF_RIF."' or BI_Invita='".$this->AF_RIF."'
+				GROUP BY E.AF_CodEvento";
+		
+		$resultado=$objConexion->ejecutar($query);
+		return $resultado;		
+	}		
 }
 ?>

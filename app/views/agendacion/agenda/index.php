@@ -1,8 +1,8 @@
 <?php 
 require_once('../../../controller/sessionController.php'); 
-require_once('../../../model/eventoModel.php');
+require_once('../../../model/citaEmpresaModel.php');
 
-$objEvento = new Evento(); 
+$objCitaEmpresa = new CitaEmpresa(); 
 ?>
 <html>
 <head>
@@ -45,27 +45,44 @@ $objEvento = new Evento();
               <td width="73%">&nbsp;</td>
             </tr>
             <tr valign="baseline">
-              <td nowrap align="right">Evento:</td>
-              <td>
-                <select name="AF_CodEvento" id="AF_CodEvento" style="width:350px">
-                  <option selected="selected">[ Seleccione ]</option>
-                  <?php 
-                            $rsEvento=$objEvento->listar($objConexion);
-                            for($i=0;$i<$objConexion->cantidadRegistros($rsEvento);$i++){
-                                  $value=$objConexion->obtenerElemento($rsEvento,$i,"AF_CodEvento");
-                                  $des=$objConexion->obtenerElemento($rsEvento,$i,"AF_Nombre_Evento");
-                                  echo "<option value=".$value.">".$des."</option>";
-                            }  
-                        ?>
-                  </select>
-                </td>
-            </tr>
+              <td colspan="2" align="left" nowrap>
+
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="TablaRojaGrid">
+                <tr class="TablaRojaGridTRTitulo">
+                  <td>Nro</td>
+                  <td>Evento</td>
+                  <td>Agenda</td>
+                </tr>
+<?php
+					$AF_RIF 	= $_SESSION['AF_RIF'];
+                    $rsEvento	= $objCitaEmpresa->listarSoloAgenda($objConexion,$AF_RIF);
+					$cantEvento = $objConexion->cantidadRegistros($rsEvento);
+					
+					if ($cantEvento>0){
+	                    for($i=0;$i<$cantEvento;$i++){
+    	                	$AF_CodEvento	  = $objConexion->obtenerElemento($rsEvento,$i,"AF_CodEvento");
+        	                $AF_Nombre_Evento = $objConexion->obtenerElemento($rsEvento,$i,"AF_Nombre_Evento");
+?>
+						<tr class="TablaRojaGridTR">
+						  <td class="TablaRojaGridTD"><?=$i+1?></td>
+						  <td class="TablaRojaGridTD" align="left">&nbsp;<?=$AF_Nombre_Evento?></td>
+						  <td class="TablaRojaGridTD" width="50"><a href="../../reportes/agenda_empresa.php?AF_RIF=<?=$AF_RIF?>&AF_CodEvento=<?=$AF_CodEvento?>" target="_blank"><img src="../../../images/bton_ver.gif" width="31" height="31"  alt=""/></a></td>
+						</tr>
+<?php 					}
+					}else{ 
+						echo 'No existen Eventos con Agendas Disponibles.';					
+					}
+					
+?>
+                    
+              </table>
+              </td>
+              </tr>
             <tr valign="baseline">
               <td colspan="2" nowrap>&nbsp;</td>
             </tr>
             <tr valign="baseline">
-              <td colspan="2" align="center"><input name="button2" type="submit" class="BotonRojo" id="button2" value="[ Ver Agenda ]" onClick="" />
-                <input name="button" type="button" class="BotonRojo" id="button" value="[ Cancelar ]" onClick="javascript:window.location='../index.php'" />
+              <td colspan="2" align="center"><input name="button" type="button" class="BotonRojo" id="button" value="[ Cancelar ]" onClick="javascript:window.location='../index.php'" />
                 <input name="AF_RIF" type="hidden" id="AF_RIF" value="<?=$_SESSION['AF_RIF']?>"></td>
               </tr>
             </table>

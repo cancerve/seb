@@ -135,7 +135,7 @@ class Evento{
 		
 		return $this->AF_CodEvento;		
 	}
-		
+
 	function getId(){
 		return $this->AF_CodEvento;
 	}

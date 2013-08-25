@@ -41,7 +41,8 @@ $objCita 	= new Cita();
               <td class="BlancoGrisClaro">&nbsp;Debe señalar por lo menos un área disponible (Celda en Blanco)</td>
             </tr>
             <tr>
-              <td><table width="100%" border="0" cellspacing="2" cellpadding="2" class="TextonegroPEQ">
+              <td>
+              <table width="100%" border="0" cellspacing="2" cellpadding="2" class="TextonegroPEQ">
                 <tr>
                   <td width="5"><input name="button2" type="button" class="BotonRojo" id="button2" value="[ Cancelar ]" onClick="javascript:window.location='index.php'"></td>
                   <td width="15">&nbsp;</td>

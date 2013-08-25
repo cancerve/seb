@@ -1,36 +1,50 @@
 <?php 
+require('../../includes/pdf/fpdf.php'); 
+require_once('../../includes/funciones.php');
 require_once('../../controller/sessionController.php'); 
+require_once('../../model/citaModel.php');
 require_once('../../model/empresaModel.php');
 require_once('../../model/empresaContModel.php');
-require_once('../../model/empresaCodArancelModel.php');
-require('../../includes/pdf/fpdf.php'); 
+require_once('../../model/eventoModel.php');
 
-$objEmpresa = new Empresa();
+
+$objCita 		= new Cita();
 $objEmpresaCont = new EmpresaCont();
-$objEmpresaCA = new EmpresaCodArancel();
+$objEvento		= new Evento();
+$objEmpresa		= new Empresa();
 ?>
 <?php
-	$AF_RIF = $_GET['AF_RIF'];
-	$RS = $objEmpresa->buscarXrif($objConexion,$AF_RIF);
-	$empresa_id = $objConexion->obtenerElemento($RS,0,"id");	
-	$AF_Rif = $objConexion->obtenerElemento($RS,0,"AF_Rif");
-	$AF_Razon_Social = $objConexion->obtenerElemento($RS,0,"AF_Razon_Social");
-	$AF_Clasificacion_Empresa = $objConexion->obtenerElemento($RS,0,"AF_Clasificacion_Empresa");
-	$AL_Pais = $objConexion->obtenerElemento($RS,0,"AL_Pais");
-	$AL_Ciudad = $objConexion->obtenerElemento($RS,0,"AL_Ciudad");	
-	$AF_Direccion = $objConexion->obtenerElemento($RS,0,"AF_Direccion");
-	$AL_Web = $objConexion->obtenerElemento($RS,0,"AL_Web");
-	$AF_Correo_Electronico = $objConexion->obtenerElemento($RS,0,"AF_Correo_Electronico");
-	$AF_Telefono = $objConexion->obtenerElemento($RS,0,"AF_Telefono");
-	$AF_Fax = $objConexion->obtenerElemento($RS,0,"AF_Fax");
-
-$RS1 = $objEmpresaCont->listarXempresa($objConexion,$AF_RIF);
-$cantRS1 = $objConexion->cantidadRegistros($RS1);	
-
-//echo $empresa_id;
-$RS2 = $objEmpresaCA->listarXempresa($objConexion,$AF_RIF);
-$cantRS2 = $objConexion->cantidadRegistros($RS2);
+///////////////////// VARIABLES ///////////////////////////////
+	$AF_RIF 		= $_GET['AF_RIF'];
+	$AF_CodEvento 	= $_GET['AF_CodEvento'];
 	
+	$RS1 		= $objEmpresa->buscarXrif($objConexion,$AF_RIF);
+	$cantRS1 	= $objConexion->cantidadRegistros($RS1);
+	
+	$AF_Razon_Social = $objConexion->obtenerElemento($RS1,0,"AF_Razon_Social");
+	
+	$RS2 		= $objEmpresaCont->listarXempresa($objConexion,$AF_RIF);
+	$cantRS2 	= $objConexion->cantidadRegistros($RS2);	
+
+	$rsEvento 		= $objEvento->buscar($objConexion,$AF_CodEvento);
+	$cantEvento 	= $objConexion->cantidadRegistros($rsEvento);
+
+	$_SESSION['AF_Nombre_Evento'] = $objConexion->obtenerElemento($rsEvento,0,"AF_Nombre_Evento");	
+	$_SESSION['FE_Fecha_Desde'] = $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Desde");
+	$_SESSION['FE_Fecha_Hasta'] = $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Hasta");
+	$_SESSION['AL_Ciudad'] 		= $objConexion->obtenerElemento($rsEvento,0,"AL_Ciudad");
+	$_SESSION['AL_Pais'] 		= $objConexion->obtenerElemento($rsEvento,0,"AL_Pais");	
+	$FE_Fecha_Desde			= $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Desde");
+	$FE_Fecha_Hasta			= $objConexion->obtenerElemento($rsEvento,0,"FE_Fecha_Hasta");
+	$TI_Hora_Inicio_Am		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Inicio_Am");
+	$TI_Hora_Final_Am		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Final_Am");
+	$TI_Hora_Inicio_Pm		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Inicio_Pm");
+	$TI_Hora_Final_Pm		= $objConexion->obtenerElemento($rsEvento,0,"TI_Hora_Final_Pm");
+	$NU_Minutos_x_Cita		= $objConexion->obtenerElemento($rsEvento,0,"NU_Minutos_x_Cita");		
+	$NU_Minutos_Entre_Cita	= $objConexion->obtenerElemento($rsEvento,0,"NU_Minutos_Entre_Cita");
+
+	$RS3 		= $objCita->mostrarAgenda($objConexion,$AF_RIF,$AF_CodEvento);
+	$cantRS3 	= $objConexion->cantidadRegistros($RS3);
 ?>
 <?php
 ///////////////////////////////////////////[ CONVERSION A PDF ]///////////////////////////////
@@ -43,8 +57,15 @@ class PDF extends FPDF{
 		$this->Cell(0,0,'',1,0,'C');
 		$this->Ln(7);								
 		$this->SetFont('Arial','B',15);
-		$this->Cell(0,0,'HOJA DETALLE DE LA EMPRESA',0,0,'C');		
-		$this->Ln(7);		
+		$this->Cell(0,0,'AGENDA DE NEGOCIOS',0,0,'C');		
+		$this->Ln(7);
+		$this->Cell(0,0,utf8_decode(mayuscula($_SESSION['AF_Nombre_Evento'])),0,0,'C');		
+		$this->Ln(7);
+		$this->Cell(0,0,'En la Ciudad de '.titulo($_SESSION['AL_Ciudad']).', '.titulo($_SESSION['AL_Pais']),0,0,'C');	
+		$this->Ln(7);
+		$this->SetFont('Arial','B',12);
+		$this->Cell(0,0,'Desde el '.date("d/m/Y",strtotime($_SESSION['FE_Fecha_Desde'])).' hasta el '.date("d/m/Y",strtotime($_SESSION['FE_Fecha_Hasta'])),0,0,'C');		
+		$this->Ln(7);						
 		$this->Cell(0,0,'',1,0,'C');
 		$this->SetFillColor(0,0,0);		
 		$this->Cell(70);
@@ -64,55 +85,14 @@ $pdf->AddPage();
 $pdf->SetLeftMargin(10);
 $pdf->Ln(1);
 $pdf->SetFont('Arial','B',13);
-$pdf->Cell(22,10,'RIF / IDN: '.$AF_Rif,0,0,'L');
+$pdf->Cell(22,10,'RIF / IDN: '.$AF_RIF,0,0,'L');
 $pdf->Ln(7);
-$pdf->Cell(65,10,'Razon Social: '.utf8_decode($AF_Razon_Social),0,0,'L');
+$pdf->Cell(65,10,'Razon Social: '.utf8_decode(mayuscula($AF_Razon_Social)),0,0,'L');
 $pdf->Ln(10);
+
 $pdf->SetFillColor(232,232,232);	
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(55,7,'Clasificacion de la Empresa: ',1,0,'L',1);
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,ucwords(strtolower(utf8_decode($AF_Clasificacion_Empresa))),1,0,'L');
-$pdf->Ln(7);
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(55,7,'Pais: ',1,0,'L',1);	
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,ucwords(strtolower(utf8_decode($AL_Pais))),1,0,'L');	
-$pdf->Ln(7);
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(55,7,'Ciudad: ',1,0,'L',1);		
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,ucwords(strtolower(utf8_decode($AL_Ciudad))),1,0,'L');		
-$pdf->SetFont('Arial','B',11);
-$pdf->Ln(7);
-$pdf->Cell(55,7,'Direccion: ',1,0,'L',1);	
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,ucwords(strtolower(utf8_decode($AF_Direccion))),1,0,'L');	
-$pdf->SetFont('Arial','B',11);
-$pdf->Ln(7);
-$pdf->Cell(55,7,'Pagina Web: ',1,0,'L',1);	
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,$AL_Web,1,0,'L');	
-$pdf->SetFont('Arial','B',11);
-$pdf->Ln(7);
-$pdf->Cell(55,7,'Correo Electronico: ',1,0,'L',1);
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,$AF_Correo_Electronico,1,0,'L');
-$pdf->SetFont('Arial','B',11);
-$pdf->Ln(7);		
-$pdf->Cell(55,7,'Telefono: ',1,0,'L',1);	
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,$AF_Telefono,1,0,'L');	
-$pdf->SetFont('Arial','B',11);
-$pdf->Ln(7);
-$pdf->Cell(55,7,'Telefono Fax: ',1,0,'L',1);	
-$pdf->SetFont('Arial','',11);
-$pdf->Cell(0,7,$AF_Fax,1,0,'L');	
-$pdf->Ln(10);
-$pdf->SetFont('Arial','B',13);
-$pdf->Cell(0,10,'Personas Contacto de la Empresa',0,0,'C');	
-$pdf->Ln(10);
-$pdf->SetFont('Arial','B',11);
+
 //ESPACIO 100% DE LA TABLA = 190 EN VERTICAL////////////////////////
 $pdf->Cell(8,7,'Nro',1,0,'C',1);
 $pdf->Cell(37,7,'Cedula / Pasaporte',1,0,'C',1);
@@ -121,11 +101,11 @@ $pdf->Cell(51,7,'Apellido',1,0,'C',1);
 $pdf->Cell(43,7,'Cargo',1,0,'C',1);	
 $pdf->Ln(7);	
 $pdf->SetFont('Arial','',10);
-for($i=0;$i<$cantRS1;$i++){
-	$NU_Cedula = $objConexion->obtenerElemento($RS1,$i,"NU_Cedula");
-	$AL_Nombre = $objConexion->obtenerElemento($RS1,$i,"AL_Nombre");
-	$AL_Apellido = $objConexion->obtenerElemento($RS1,$i,"AL_Apellido");
-	$AF_Cargo = $objConexion->obtenerElemento($RS1,$i,"AF_Cargo");
+for($i=0;$i<$cantRS2;$i++){
+	$NU_Cedula 	= $objConexion->obtenerElemento($RS2,$i,"NU_Cedula");
+	$AL_Nombre 	= $objConexion->obtenerElemento($RS2,$i,"AL_Nombre");
+	$AL_Apellido= $objConexion->obtenerElemento($RS2,$i,"AL_Apellido");
+	$AF_Cargo 	= $objConexion->obtenerElemento($RS2,$i,"AF_Cargo");
 
 	$pdf->Cell(8,7,$i+1,1,0,'C',1);
 	$pdf->Cell(37,7,$NU_Cedula,1,0,'L');
@@ -134,23 +114,46 @@ for($i=0;$i<$cantRS1;$i++){
 	$pdf->Cell(43,7,ucwords(strtolower(utf8_decode($AF_Cargo))),1,0,'L');	
 	$pdf->Ln(7);	
 }
-$pdf->Ln(3);
-$pdf->SetFont('Arial','B',13);
-$pdf->Cell(0,10,'Codigos Arancelarios vinculados a la Empresa',0,0,'C');	
 $pdf->Ln(10);
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(8,7,'Nro',1,0,'C',1);
-$pdf->Cell(15,7,'Codigo',1,0,'C',1);
-$pdf->Cell(0,7,'Descripcion',1,0,'C',1);
-$pdf->Ln(7);	
-$pdf->SetFont('Arial','',10);
-for($j=0;$j<$cantRS2;$j++){
-	$AL_CodArancel = $objConexion->obtenerElemento($RS2,$j,"AL_CodArancel");
-	$AF_Arancel = $objConexion->obtenerElemento($RS2,$j,"AF_Arancel");
-	$pdf->Cell(8,7,$j+1,1,0,'C',1);
-	$pdf->Cell(15,7,$AL_CodArancel,1,0,'L');
-	$pdf->Cell(0,7,substr(ucwords(strtolower(utf8_decode($AF_Arancel))),0,95),1,0,'L');
-	$pdf->Ln(7);	
+$pdf->SetFont('Arial','B',13);
+$pdf->Cell(0,0,mayuscula('Cronograma de Citas:'),0,0,'C');
+$pdf->Ln(3);
+$igual = '';
+for($i=0;$i<$cantRS3;$i++){
+	$FE_Fecha 	= $objConexion->obtenerElemento($RS3,$i,"FE_Fecha");
+	if ($igual!=$FE_Fecha){
+		$pdf->Ln(7);
+		$pdf->SetFont('Arial','B',13);
+		$pdf->Cell(0,7,'Dia: '.cambiarFormatoA($FE_Fecha),1,0,'C');
+		$pdf->Ln(7);
+		$pdf->Cell(30,7,'Hora',1,0,'C',1);
+		$pdf->Cell(140,7,'Empresa',1,0,'C',1);
+		$pdf->Cell(0,7,'Mesa',1,0,'C',1);
+		$pdf->Ln(7);	
+		$pdf->SetFont('Arial','',10);
+		$igual = $FE_Fecha;
+	}
+	$TI_Hora_Inicio = $objConexion->obtenerElemento($RS3,$i,"TI_Hora_Inicio");
+	$TI_Hora_Final 	= $objConexion->obtenerElemento($RS3,$i,"TI_Hora_Final");
+	$empresa_AF_RIF	= $objConexion->obtenerElemento($RS3,$i,"empresa_AF_RIF");
+	$BI_Invita 		= $objConexion->obtenerElemento($RS3,$i,"BI_Invita");
+	$Invita			= $objConexion->obtenerElemento($RS3,$i,"Invita");
+	$Invitado 		= $objConexion->obtenerElemento($RS3,$i,"Invitado");	
+	$NU_Mesa 		= $objConexion->obtenerElemento($RS3,$i,"NU_Mesa");
+
+	if ($empresa_AF_RIF==$AF_RIF){
+		$RIF = $BI_Invita;
+		$empresa = $Invitado;
+	}else{
+		$RIF = $empresa_AF_RIF;		
+		$empresa = $Invita;		
+	}
+	if ($RIF != '0'){
+		$pdf->Cell(30,7,formatoHora($TI_Hora_Inicio).' / '.formatoHora($TI_Hora_Final),1,0,'C',1);
+		$pdf->Cell(140,7,$empresa,1,0,'L');
+		$pdf->Cell(0,7,$NU_Mesa,1,0,'C');
+		$pdf->Ln(7);	
+	}
 }
 $pdf->Ln(10);	
 $pdf->Output();

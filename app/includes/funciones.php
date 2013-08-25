@@ -1,6 +1,6 @@
 <?php
 function cambiarFormatoA($fecha1){
-	$fecha2=date("d-m-Y",strtotime($fecha1));
+	$fecha2=date("d/m/Y",strtotime($fecha1));
 	return $fecha2;
 }
 
@@ -34,5 +34,15 @@ function mayusprimera($palabra){
 function mayuscdapalabra($palabra){
 	$palabra = ucwords($palabra);
 	return $palabra;	
+}
+
+function titulo($palabra){
+	$palabra = ucwords(strtolower(utf8_decode($palabra)));
+	return $palabra;	
+}
+
+function formatoHora($hora){
+	$hora =	date("H:i",strtotime($hora));
+	return $hora;
 }
 ?>

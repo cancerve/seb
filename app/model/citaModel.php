@@ -109,7 +109,25 @@ class Cita{
 		$resultado=$objConexion->ejecutar($query);
 		
 		return $resultado;		
-	}	
+	}
+		
+	function mostrarAgenda($objConexion,$AF_RIF,$Evento){
+		$this->AF_RIF	= $AF_RIF;
+		$this->Evento 	= $Evento;
+		$query="SELECT C.*, CE.*, E.AF_Razon_Social AS Invita, E2.AF_Razon_Social  AS Invitado
+				FROM cita AS C
+				LEFT JOIN cita_empresa AS CE
+						ON (CE.cita_NU_Cita=C.NU_Cita)
+				LEFT JOIN empresa AS E
+						ON (E.AF_RIF=CE.empresa_AF_RIF)
+				LEFT JOIN empresa AS E2
+						ON (E2.AF_RIF=CE.BI_Invita)
+				WHERE (CE.BI_Invita='".$this->AF_RIF."' or empresa_AF_RIF='".$this->AF_RIF."') and C.evento_AF_CodEvento='".$this->Evento."' ORDER BY FE_Fecha ASC";
+		
+		$resultado=$objConexion->ejecutar($query);
+		
+		return $resultado;		
+	}
 
 	function buscarXhorario($objConexion,$evento_AF_CodEvento,$FE_Fecha,$TI_Hora_Inicio,$TI_Hora_Final,$AF_RIF_Invita){
 		$this->evento_AF_CodEvento	= $evento_AF_CodEvento;
@@ -125,6 +143,25 @@ class Cita{
 				LEFT JOIN empresa AS E ON
 						(E.AF_RIF=CE.BI_Invita)
 				WHERE C.evento_AF_CodEvento='".$this->evento_AF_CodEvento."' and C.FE_Fecha='".$this->FE_Fecha."' and C.TI_Hora_Inicio='".$this->TI_Hora_Inicio."' and C.TI_Hora_Final='".$this->TI_Hora_Final."' and CE.empresa_AF_RIF='".$this->AF_RIF_Invita."'";
+
+		$resultado=$objConexion->ejecutar($query);
+		return $resultado;		
+	}
+
+	function buscarXhorario2($objConexion,$evento_AF_CodEvento,$FE_Fecha,$TI_Hora_Inicio,$TI_Hora_Final,$AF_RIF_Invita){
+		$this->evento_AF_CodEvento	= $evento_AF_CodEvento;
+		$this->FE_Fecha				= $FE_Fecha;
+		$this->TI_Hora_Inicio		= $TI_Hora_Inicio;
+		$this->TI_Hora_Final		= $TI_Hora_Final;
+		$this->AF_RIF_Invita		= $AF_RIF_Invita;
+		
+		$query="SELECT C.*, CE.empresa_AF_RIF, CE.BI_Invita, E.*
+				FROM cita AS C
+				LEFT JOIN cita_empresa AS CE ON
+						(CE.cita_NU_Cita=C.NU_Cita)
+				LEFT JOIN empresa AS E ON
+						(E.AF_RIF=CE.BI_Invita)
+				WHERE C.evento_AF_CodEvento='".$this->evento_AF_CodEvento."' and C.FE_Fecha='".$this->FE_Fecha."' and C.TI_Hora_Inicio='".$this->TI_Hora_Inicio."' and C.TI_Hora_Final='".$this->TI_Hora_Final."' and (CE.empresa_AF_RIF='".$this->AF_RIF_Invita."' or CE.BI_Invita='".$this->AF_RIF_Invita."'";
 
 		$resultado=$objConexion->ejecutar($query);
 		return $resultado;		
