@@ -89,3 +89,48 @@ function cargaContenido(idSelectOrigen,valor_ciudad)
 		ajax.send(null);
 	}
 }
+
+function cargaContenido2(action,idSelectOrigen,idSelectDestino)
+{
+	
+	//var opcionselect=selectOrigen.options[selectOrigen.selectedIndex].value;	
+
+	var selectOrigen = document.getElementById(idSelectOrigen);
+	var opcionselect = document.getElementById(idSelectOrigen).value;
+	var selectDestino = document.getElementById(idSelectDestino);
+	var ajax=nuevoAjax();
+	
+	ajax.open("GET", "http://localhost/seb/app/includes/select_dependientes2.php?idSelectDestino="+idSelectDestino+"&opcion="+opcionselect+"&action="+action, true);
+	ajax.onreadystatechange=function() 
+	{ 
+		if (ajax.readyState==4)
+		{
+			selectDestino.parentNode.innerHTML=ajax.responseText;
+		} 
+	}
+	ajax.send(null);
+	
+}
+
+function cargaContenido3(action,idSelectOrigen,idSelectDestino,cita_NU_Cita)
+{
+	
+	//var opcionselect=selectOrigen.options[selectOrigen.selectedIndex].value;	
+
+	var selectOrigen = document.getElementById(idSelectOrigen);
+	var opcionselect = document.getElementById(idSelectOrigen).value;
+	var selectDestino = document.getElementById(idSelectDestino);
+	var ajax=nuevoAjax();
+	
+	ajax.open("GET", "http://localhost/seb/app/includes/select_dependientes2.php?idSelectDestino="+idSelectDestino+"&opcion="+opcionselect+"&action="+action+"&cita_NU_Cita="+cita_NU_Cita, true);
+	ajax.onreadystatechange=function() 
+	{ 
+		if (ajax.readyState==4)
+		{
+			//selectDestino.parentNode.innerHTML=ajax.responseText;
+			document.getElementById("myDiv").innerHTML=ajax.responseText;
+		} 
+	}
+	ajax.send(null);
+	
+}

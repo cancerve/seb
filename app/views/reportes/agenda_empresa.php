@@ -127,12 +127,14 @@ for($i=0;$i<$cantRS3;$i++){
 		$pdf->Cell(0,7,'Dia: '.cambiarFormatoA($FE_Fecha),1,0,'C');
 		$pdf->Ln(7);
 		$pdf->Cell(30,7,'Hora',1,0,'C',1);
-		$pdf->Cell(140,7,'Empresa',1,0,'C',1);
+		$pdf->Cell(15,7,'Cita',1,0,'C',1);		
+		$pdf->Cell(125,7,'Empresa',1,0,'C',1);
 		$pdf->Cell(0,7,'Mesa',1,0,'C',1);
 		$pdf->Ln(7);	
 		$pdf->SetFont('Arial','',10);
 		$igual = $FE_Fecha;
 	}
+	$NU_Cita 		= $objConexion->obtenerElemento($RS3,$i,"NU_Cita");
 	$TI_Hora_Inicio = $objConexion->obtenerElemento($RS3,$i,"TI_Hora_Inicio");
 	$TI_Hora_Final 	= $objConexion->obtenerElemento($RS3,$i,"TI_Hora_Final");
 	$empresa_AF_RIF	= $objConexion->obtenerElemento($RS3,$i,"empresa_AF_RIF");
@@ -150,7 +152,8 @@ for($i=0;$i<$cantRS3;$i++){
 	}
 	if ($RIF != '0'){
 		$pdf->Cell(30,7,formatoHora($TI_Hora_Inicio).' / '.formatoHora($TI_Hora_Final),1,0,'C',1);
-		$pdf->Cell(140,7,$empresa,1,0,'L');
+		$pdf->Cell(15,7,$NU_Cita,1,0,'C');		
+		$pdf->Cell(125,7,$empresa,1,0,'L');
 		$pdf->Cell(0,7,$NU_Mesa,1,0,'C');
 		$pdf->Ln(7);	
 	}

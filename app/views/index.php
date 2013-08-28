@@ -141,7 +141,7 @@ Créditos<br>
   </tr>
   <tr>
     <td valign="top" bordercolor="#000000">
-		<iframe src="centralView.php?mensaje=<?=$_GET['mensaje']?>" name="central" width="780" height="500" vspace="0" scrolling="yes" frameborder="1"></iframe>	
+		<iframe src="centralView.php?mensaje=<?=$_GET['mensaje']?>" name="central" id="central" width="780" height="500" vspace="0" scrolling="yes" frameborder="1"></iframe>	
 	</td>
   </tr>
 </table>

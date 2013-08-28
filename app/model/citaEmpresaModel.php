@@ -39,6 +39,17 @@ class CitaEmpresa{
 		
 		$resultado=$objConexion->ejecutar($query);
 		return $resultado;		
-	}		
+	}
+	
+	function buscar($objConexion,$cita_NU_Cita){
+		$this->cita_NU_Cita=$cita_NU_Cita;
+		$query="SELECT CE.*, E.*
+				FROM cita_empresa AS CE
+				LEFT JOIN empresa AS E
+					ON (E.AF_RIF=CE.empresa_AF_RIF)
+				WHERE CE.cita_NU_Cita='".$this->cita_NU_Cita."'";
+		$resultado=$objConexion->ejecutar($query);
+		return $resultado;		
+	}			
 }
 ?>
