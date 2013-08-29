@@ -18,8 +18,8 @@ class Resultado{
 	private $AF_Producto;			
 	private $AF_Descripcion;	
 
-	function insertar($objConexion,$AF_RIF_Reporta,$empresa_contacto_NU_Cedula_Reporta,$AF_RIF_Contraparte,$empresa_contacto_NU_Cedula_Contraparte,$BI_Interes,$BS_Monto1,$BI_Tipo_Negocio1,$AF_Otro1,$BS_Monto2,$BI_Tipo_Negocio2,$AF_Otro2,$BS_Monto3,$BI_Tipo_Negocio3,$AF_Otro3,$AF_Producto,$AF_Descripcion){
-		$this->generarNuevo($objConexion);
+	function insertar($objConexion,$cita_NU_Cita,$AF_RIF_Reporta,$empresa_contacto_NU_Cedula_Reporta,$AF_RIF_Contraparte,$empresa_contacto_NU_Cedula_Contraparte,$BI_Interes,$BS_Monto1,$BI_Tipo_Negocio1,$AF_Otro1,$BS_Monto2,$BI_Tipo_Negocio2,$AF_Otro2,$BS_Monto3,$BI_Tipo_Negocio3,$AF_Otro3,$AF_Producto,$AF_Descripcion){
+		$this->cita_NU_Cita								= $cita_NU_Cita;
 		$this->AF_RIF_Reporta							= $AF_RIF_Reporta;
 		$this->empresa_contacto_NU_Cedula_Reporta		= $empresa_contacto_NU_Cedula_Reporta;				
 		$this->AF_RIF_Contraparte						= $AF_RIF_Contraparte;
@@ -44,18 +44,6 @@ class Resultado{
 		return true;
 	}
 	
-	private function generarNuevo($objConexion){
-		$this->cita_NU_Cita=0;
-		$query="SELECT MAX(cita_NU_Cita) as cita_NU_Cita
-				FROM resultado_negocio";
-		$resultado=$objConexion->ejecutar($query);
-		if($objConexion->cantidadRegistros($resultado)>0){
-			$this->cita_NU_Cita=$objConexion->obtenerElemento($resultado,0,0);
-		}
-		$this->cita_NU_Cita++;
-		return;
-	}
-	
 	function buscar($objConexion,$cita_NU_Cita){
 		$this->cita_NU_Cita=$cita_NU_Cita;
 		$query="SELECT *
@@ -65,9 +53,15 @@ class Resultado{
 		return $resultado;		
 	}
 	
-	function listar($objConexion){
-		$query="SELECT *
-				FROM resultado_negocio
+	function listarXevento($objConexion,$AF_CodEvento){
+		$this->AF_CodEvento = $AF_CodEvento;
+		$query="SELECT R.*, C.*, E.AF_Razon_Social AS Reporta
+				FROM resultado_negocio AS R
+				LEFT JOIN cita AS C
+					ON (C.NU_Cita=R.cita_NU_Cita)
+				LEFT JOIN empresa AS E
+					ON (E.AF_RIF=R.AF_RIF_Reporta)
+				WHERE C.evento_AF_CodEvento='".$this->AF_CodEvento."'
 				ORDER BY cita_NU_Cita DESC";
 		$resultado=$objConexion->ejecutar($query);
 		return $resultado;		

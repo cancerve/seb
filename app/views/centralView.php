@@ -14,9 +14,10 @@ require_once('../model/citaModel.php');
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.js"></script>
 <script type="text/javascript">
+
     function abrir_dialog() {
 		var mensaje = "<?php echo $_GET['mensaje']; ?>";
-		if(mensaje){
+		if(mensaje!=''){
 		  $( "#dialog" ).dialog({
 			  show: "blind",
 			  hide: "explode",

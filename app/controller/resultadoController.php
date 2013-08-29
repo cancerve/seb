@@ -27,7 +27,7 @@ if(isset($_REQUEST["origen"])){
 		$AF_Producto 							= $_REQUEST["AF_Producto"];	
 		$AF_Descripcion 						= $_REQUEST["AF_Descripcion"];
 
-		$objResultado->insertar($objConexion,$AF_RIF_Reporta,$empresa_contacto_NU_Cedula_Reporta,$AF_RIF_Contraparte,$empresa_contacto_NU_Cedula_Contraparte,$BI_Interes,$BS_Monto1,$BI_Tipo_Negocio1,$AF_Otro1,$BS_Monto2,$BI_Tipo_Negocio2,$AF_Otro2,$BS_Monto3,$BI_Tipo_Negocio3,$AF_Otro3,$AF_Producto,$AF_Descripcion);
+		$objResultado->insertar($objConexion,$cita_NU_Cita,$AF_RIF_Reporta,$empresa_contacto_NU_Cedula_Reporta,$AF_RIF_Contraparte,$empresa_contacto_NU_Cedula_Contraparte,$BI_Interes,$BS_Monto1,$BI_Tipo_Negocio1,$AF_Otro1,$BS_Monto2,$BI_Tipo_Negocio2,$AF_Otro2,$BS_Monto3,$BI_Tipo_Negocio3,$AF_Otro3,$AF_Producto,$AF_Descripcion);
 
 		$mensaje='Resultado de Negocio registrado Exitosamente.';
 		header("Location: ../views/resultado/index.php?mensaje=$mensaje");

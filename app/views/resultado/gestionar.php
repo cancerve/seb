@@ -1,12 +1,13 @@
 <?php 
 require_once('../../controller/sessionController.php'); 
-require_once('../../model/eventoModel.php');
+require_once('../../model/resultadoModel.php');
  
 
-$objEvento = new Evento();
+$objResultado = new Resultado();
 $AF_CodEvento = $_REQUEST['AF_CodEvento'];
-$RS = $objEvento->buscar($objConexion,$AF_CodEvento);
-$AF_Nombre_Evento = $objConexion->obtenerElemento($RS,0,'AF_Nombre_Evento');
+$RS 	= $objResultado->listarXevento($objConexion,$AF_CodEvento);
+$cantRS = $objConexion->cantidadRegistros($RS);
+
 ?>
 <html>
 <link rel="stylesheet" type="text/css" href="../../css/seb.css">
@@ -50,39 +51,42 @@ $AF_Nombre_Evento = $objConexion->obtenerElemento($RS,0,'AF_Nombre_Evento');
       <td height="25" align="center">&nbsp;</td>
     </tr>
     <tr>
-      <td height="25" align="center"><a href="addView.php?AF_CodEvento=<?=$AF_CodEvento?>"><img src="../../images/bton_add.gif" width="35" height="31">&nbsp;Agregar Nuevo Resultado de Negocio al Evento: <?=strtoupper($AF_Nombre_Evento)?></a></td>
+      <td height="25" align="center"><a href="addView.php?AF_CodEvento=<?=$AF_CodEvento?>"><img src="../../images/bton_add.gif" width="35" height="31">&nbsp;Agregar Nuevo Resultado de Negocio</a></td>
     </tr>
     <tr>
       <td height="25">&nbsp;</td>
     </tr>
+    <?php if ($cantRS>0){ ?>
     <tr>
       <td height="25">
-    <?php
-		/*$rsEvento=$objEvento->listar($objConexion);
-		if($objConexion->cantidadRegistros($rsEvento)>0){*/
-	?>      
       <table width="95%" class="TablaRojaGrid" align="center">
       <thead>
         <tr class="TablaRojaGridTRTitulo">
           <th scope="col" align="center">NRO. CITA</th>
           <th scope="col" align="center">FECHA</th>
           <th scope="col" align="center">HORA</th>
-          <th scope="col" align="center"> EMPRESA QUE REPORTA</th>
-          <th scope="col" align="center">MONTO</th>
+          <th scope="col" align="center">EMPRESA QUE REPORTA</th>
+          <th scope="col" align="center">INTERES</th>
           <th scope="col" align="center">EDITAR</th>
           <th scope="col" align="center">BORRAR</th>
         </tr>
 	  </thead>
       <tbody>
 	<?php
-    	//while($evento=$objConexion->obtenerArreglo($rsEvento,MYSQL_ASSOC)){
+    	for($i=0; $i<$cantRS; $i++){
+			$cita_NU_Cita 	= $objConexion->obtenerElemento($RS,$i,'cita_NU_Cita');
+			$FE_Fecha 		= $objConexion->obtenerElemento($RS,$i,'FE_Fecha');			
+			$TI_Hora_Inicio = $objConexion->obtenerElemento($RS,$i,'TI_Hora_Inicio');
+			$TI_Hora_Final 	= $objConexion->obtenerElemento($RS,$i,'TI_Hora_Final');			
+			$Reporta 		= $objConexion->obtenerElemento($RS,$i,'Reporta');
+			$BI_Interes 	= $objConexion->obtenerElemento($RS,$i,'BI_Interes');			
     ?>
         <tr>
-          <td align="center" class="TablaRojaGridTD"><?php //echo $evento["AL_Pais"]; ?>&nbsp;</td>
-          <td align="center" class="TablaRojaGridTD"><?php //echo $evento["AL_Ciudad"]; ?>&nbsp;</td>
-          <td class="TablaRojaGridTD"><?php //echo $evento["AF_Nombre_Evento"]; ?>&nbsp;</td>
-          <td align="center" class="TablaRojaGridTD"><?php //echo $evento["FE_Fecha_Hasta"]; ?>&nbsp;</td>
-          <td align="center" class="TablaRojaGridTD">&nbsp;</td>
+          <td align="center" class="TablaRojaGridTD"><?php echo $cita_NU_Cita; ?></td>
+          <td align="center" class="TablaRojaGridTD"><?php echo $FE_Fecha; ?></td>
+          <td align="center" class="TablaRojaGridTD"><?php echo $TI_Hora_Inicio.' / '.$TI_Hora_Final; ?></td>
+          <td align="left" class="TablaRojaGridTD"><?php echo $Reporta; ?></td>
+          <td align="center" class="TablaRojaGridTD"><?php if ($BI_Interes=='1'){ echo 'Si'; }else{ echo 'No'; } ?></td>
           <td align="center" class="TablaRojaGridTD">
           	<a href="../configuracion/evento/editView.php?id=<?php echo $evento['id']; ?>" onClick="return confirmEdit()">
             <img src="../../images/bton_edit.gif" width="35" height="31"></a>
@@ -93,12 +97,12 @@ $AF_Nombre_Evento = $objConexion->obtenerElemento($RS,0,'AF_Nombre_Evento');
           </td>
         </tr>
 	<?php
-	    //}
+	    }
     ?>          
         </tbody>
       </table>
 	<?php
-	    //}else{ echo 'No se encontraron registros.'; }
+	    }else{ echo 'No se encontraron registros.'; }
     ?>       
       </td>
     </tr>
