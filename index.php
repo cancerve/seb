@@ -71,7 +71,7 @@
                     <td class="Textonegro" align="justify" height="5px">&nbsp;</td>
                   </tr>
                   <tr>
-                    <td height="50" align="center" bordercolor="#0055a5" bgcolor="CCCCCC" class="NegritaMayor"><a href="app/views/usuario_empresa/index.php">Si aun no esta Registrado en el SISTEMA DE EVENTOS BANCOEX, Haga clic aqui.</a></td>
+                    <td height="50" align="center" bordercolor="#0055a5" bgcolor="CCCCCC" class="NegritaMayor"><a href="app/views/usuario_empresa/index.php">Si aun su empresa no esta registrada en el SISTEMA DE EVENTOS BANCOEX, Haga clic aqui.</a></td>
                   </tr>
                   <tr>
                     <td class="Textonegro" align="justify" height="5px">&nbsp;</td>
